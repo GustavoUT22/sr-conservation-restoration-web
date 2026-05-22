@@ -1,26 +1,255 @@
-@import "tailwindcss";
+/*
+ * globals.css
+ *
+ * Fuente de verdad de todo el sistema de diseño.
+ * Estructura:
+ *   1. Paleta base (ramps de color con 11 stops cada una)
+ *   2. Tokens semánticos propios (--bg-*, --text-*, --surface-*, etc.)
+ *   3. Aliases shadcn / Tailwind (--background, --card, --primary, etc.)
+ *      → Estos apuntan a los tokens propios para que Figma Make
+ *        y tu proyecto Next.js compartan los mismos valores reales.
+ *   4. CSS reset + estilos base del body
+ *
+ * Uso en componentes:
+ *   - Prefiere siempre los tokens semánticos (--bg-dark, --text-inv…)
+ *   - Usa los ramps directamente (--primary-800) solo cuando necesites
+ *     un valor específico fuera de los semánticos.
+ *   - Los aliases shadcn NO deben usarse en tu código; son para que
+ *     los componentes generados por Figma Make funcionen sin tocarlos.
+ */
+
+/* ==========================================================================
+   1. PALETA BASE
+   Cuatro ramps de color con 11 stops (50–950).
+   Los números más bajos son más claros, los más altos más oscuros.
+   ========================================================================== */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+  /*
+   * Primary — warm cinematic darks
+   * Usado para: fondos principales, superficies, capas de profundidad.
+   * 900/950 = fondo más oscuro · 700/800 = superficies · 50–300 = rara vez
+   */
+  --primary-50:  #F7F4F1;
+  --primary-100: #EDE6DE;
+  --primary-200: #D4C9BE;
+  --primary-300: #B5A898;
+  --primary-400: #8F7E6E;
+  --primary-500: #6B5D50;
+  --primary-600: #4E4239;
+  --primary-700: #3A3130;
+  --primary-800: #251E1A;
+  --primary-900: #1C1410;
+  --primary-950: #100C09;
+
+  /*
+   * Secondary — gold / taupe
+   * Usado para: acentos, botones primarios, highlights, iconografía activa.
+   * 300–400 = versiones suaves · 600 = acento principal · 900 = acento oscuro
+   */
+  --secondary-50:  #FAF7F4;
+  --secondary-100: #F2EBE3;
+  --secondary-200: #E8D9CB;
+  --secondary-300: #D6C8B5;
+  --secondary-400: #C4B09A;
+  --secondary-500: #B09680;
+  --secondary-600: #8B7B67;
+  --secondary-700: #705F4F;
+  --secondary-800: #564840;
+  --secondary-900: #3D342E;
+  --secondary-950: #261F1A;
+
+  /*
+   * Tertiary — warm ivory / cream
+   * Usado para: fondos claros, secciones invertidas (light mode parcial).
+   * 200 = fondo claro principal · 500 = tono medio para charts/separadores
+   */
+  --tertiary-50:  #FDFCFB;
+  --tertiary-100: #FAF8F5;
+  --tertiary-200: #F5F1EA;
+  --tertiary-300: #EEE6D8;
+  --tertiary-400: #E3D9C8;
+  --tertiary-500: #D4C9B5;
+  --tertiary-600: #B8A98E;
+  --tertiary-700: #9A8A6E;
+  --tertiary-800: #7A6C54;
+  --tertiary-900: #5A4F3C;
+  --tertiary-950: #3A342A;
+
+  /*
+   * Neutral — warm grays
+   * Usado para: texto, bordes, estados disabled, iconos secundarios.
+   * 100 = texto sobre oscuro · 500 = texto muted · 700 = disabled · 800 = texto sobre claro
+   */
+  --neutral-50:  #F9F8F7;
+  --neutral-100: #F0EAE0;
+  --neutral-200: #E4DDD3;
+  --neutral-300: #CBBFB2;
+  --neutral-400: #A89C8E;
+  --neutral-500: #7C7468;
+  --neutral-600: #645C52;
+  --neutral-700: #4A443C;
+  --neutral-800: #3A3632;
+  --neutral-900: #2A2622;
+  --neutral-950: #1A1714;
+
+
+  /* ==========================================================================
+     2. TOKENS SEMÁNTICOS PROPIOS
+     Úsalos en tus componentes. Si el diseño cambia, solo tocas aquí.
+     ========================================================================== */
+
+  /* Fondos */
+  --bg-dark:        var(--primary-900);    /* #1C1410 — fondo base de la app */
+  --bg-light:       var(--tertiary-200);   /* #F5F1EA — secciones claras invertidas */
+
+  /* Texto */
+  --text-main:      var(--neutral-800);    /* #3A3632 — texto sobre fondo claro */
+  --text-inv:       var(--neutral-100);    /* #F0EAE0 — texto sobre fondo oscuro */
+  --text-muted:     var(--neutral-500);    /* #7C7468 — texto secundario / placeholders */
+
+  /* Acento decorativo */
+  --accent-sand:    var(--secondary-300);  /* #D6C8B5 — tono suave para detalles */
+
+  /* Bordes */
+  --border-inv:     rgba(240, 234, 224, 0.08); /* borde sutil sobre oscuro */
+
+  /* Tipografía */
+  --serif:          'Playfair Display', serif; /* títulos editoriales */
+  --sans:           'DM Sans', sans-serif;     /* cuerpo y UI */
+
+  /* Superficies (capas de elevación) */
+  --surface:        var(--primary-800);    /* #251E1A — cards, paneles */
+  --surface-raised: var(--primary-700);    /* #3A3130 — dropdowns, tooltips, modals */
+
+  /* Acentos */
+  --accent:         var(--secondary-600);  /* #8B7B67 — acento principal */
+  --accent-muted:   var(--secondary-300);  /* #D6C8B5 — acento suave */
+  --accent-dim:     var(--secondary-900);  /* #3D342E — acento sobre oscuro */
+
+
+  /* ==========================================================================
+     3. ALIASES SHADCN / TAILWIND
+     Mapean los tokens propios a las variables que espera Figma Make / shadcn-ui.
+     No uses estas variables directamente en tu código — usa las semánticas de arriba.
+     Si en devtools ves `--card` resolviendo a #251E1A, sabes que es --surface / --primary-800.
+     ========================================================================== */
+
+  /* Fondos de componentes */
+  --background:           var(--primary-900);    /* #1C1410 */
+  --card:                 var(--primary-800);    /* #251E1A */
+  --popover:              var(--primary-800);    /* #251E1A */
+
+  /* Texto de componentes */
+  --foreground:           var(--neutral-100);    /* #F0EAE0 */
+  --card-foreground:      var(--neutral-100);    /* #F0EAE0 */
+  --popover-foreground:   var(--neutral-100);    /* #F0EAE0 */
+
+  /* Botones / badges principales → acento gold */
+  --primary:              var(--secondary-600);  /* #8B7B67 */
+  --primary-foreground:   var(--neutral-100);    /* #F0EAE0 */
+
+  /* Botones / badges secundarios → superficie oscura */
+  --secondary:            var(--primary-700);    /* #3A3130 */
+  --secondary-foreground: var(--neutral-200);    /* #E4DDD3 */
+
+  /* Estados apagados */
+  --muted:                var(--primary-800);    /* #251E1A */
+  --muted-foreground:     var(--neutral-500);    /* #7C7468 */
+
+  /* Acento de componentes → versión oscura del gold */
+  --accent:               var(--secondary-900);  /* #3D342E */
+  --accent-foreground:    var(--secondary-300);  /* #D6C8B5 */
+
+  /* Estados de error / destructivos — valor fijo, no parte del ramp */
+  --destructive:           #d4183d;
+  --destructive-foreground:#ffffff;
+
+  /* Bordes e inputs */
+  --border:               rgba(240, 234, 224, 0.08);
+  --input:                var(--primary-700);    /* #3A3130 */
+  --input-background:     var(--primary-800);    /* #251E1A */
+  --ring:                 var(--secondary-500);  /* #B09680 — focus ring */
+
+  /* Sidebar */
+  --sidebar:                    var(--primary-950);   /* #100C09 — más oscuro que el bg */
+  --sidebar-foreground:         var(--neutral-100);   /* #F0EAE0 */
+  --sidebar-primary:            var(--secondary-600); /* #8B7B67 */
+  --sidebar-primary-foreground: var(--neutral-100);   /* #F0EAE0 */
+  --sidebar-accent:             var(--primary-800);   /* #251E1A */
+  --sidebar-accent-foreground:  var(--neutral-200);   /* #E4DDD3 */
+  --sidebar-border:             rgba(240, 234, 224, 0.08);
+  --sidebar-ring:               var(--secondary-500); /* #B09680 */
+
+  /* Charts — ramp secondary + tertiary + neutrals para mantener calidez */
+  --chart-1: var(--secondary-400);  /* #C4B09A */
+  --chart-2: var(--tertiary-500);   /* #D4C9B5 */
+  --chart-3: var(--neutral-600);    /* #645C52 */
+  --chart-4: var(--secondary-600);  /* #8B7B67 */
+  --chart-5: var(--primary-500);    /* #6B5D50 */
+
+  /* Misceláneos */
+  --radius:             0.625rem;   /* border-radius base para componentes shadcn */
+  --font-size:          16px;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --switch-background:  var(--primary-600);  /* #4E4239 */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+/* ==========================================================================
+   4. CSS RESET + ESTILOS BASE
+   Reset minimalista. El body hereda la paleta definida arriba.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--sans);           /* DM Sans */
+  color: var(--text-inv);             /* neutral-100 = #F0EAE0 */
+  background-color: var(--bg-dark);   /* primary-900 = #1C1410 */
+}
+
+/* Evita que imágenes y medios se desborden de su contenedor */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Formularios heredan la tipografía del body */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Links sin decoración por defecto; el color lo maneja cada componente */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Listas sin estilo por defecto */
+ul,
+ol {
+  list-style: none;
 }
