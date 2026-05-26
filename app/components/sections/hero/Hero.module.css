@@ -1,0 +1,276 @@
+/*
+ * Hero.module.css
+ *
+ * Variables consumidas de globals.css:
+ *   --bg-dark        → fallback de fondo
+ *   --text-inv       → texto principal (neutral-100)
+ *   --text-muted     → texto secundario (neutral-500)
+ *   --accent-sand    → color eyebrow line (secondary-300)
+ *   --serif          → Playfair Display
+ *   --sans           → DM Sans
+ *   --border-inv     → borde marquee
+ */
+
+/* ── Sección raíz ── */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;             /* ocupa toda la ventana, incluyendo detrás del header */
+  background-color: var(--bg-dark);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ── Imagen de fondo ── */
+.bgImage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* ── Gradiente: oscuro a la izquierda, transparente a la derecha ── */
+.gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgba(28, 20, 16, 0.97) 0%,
+    rgba(28, 20, 16, 0.92) 30%,
+    rgba(28, 20, 16, 0.65) 55%,
+    rgba(28, 20, 16, 0.10) 100%
+  );
+}
+
+/* ── Contenido ── */
+.content {
+  position: relative;
+  z-index: 2;
+  padding: 0 2.5rem;
+  padding-top: 7rem;              /* espacio para el header fijo */
+  padding-bottom: 6rem;           /* espacio para el marquee */
+  max-width: 680px;
+}
+
+/* ── Eyebrow ── */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrowLine {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+  flex-shrink: 0;
+}
+
+.eyebrowText {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+}
+
+/* ── Heading ── */
+.heading {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.92;
+  margin-bottom: 1.75rem;
+}
+
+.headingFirst {
+  font-family: var(--serif);
+  font-size: clamp(4rem, 9vw, 7.5rem);
+  font-weight: 700;
+  font-style: normal;
+  color: var(--text-inv);
+  letter-spacing: -0.01em;
+}
+
+.headingLast {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 8vw, 6.75rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--accent-sand);
+  letter-spacing: -0.01em;
+}
+
+/* Línea decorativa bajo el nombre */
+.heading::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+  margin-top: 1.25rem;
+  opacity: 0.6;
+}
+
+/* ── Tagline ── */
+.tagline {
+  font-family: var(--sans);
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 28ch;
+  margin-bottom: 2.25rem;
+}
+
+/* ── CTAs ── */
+.ctas {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.ctaPrimary {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-inv);
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--text-inv);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.ctaPrimary:hover {
+  color: var(--accent-sand);
+  border-color: var(--accent-sand);
+}
+
+.ctaSecondary {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.ctaSecondary:hover {
+  color: var(--text-inv);
+}
+
+/* ── Estadísticas ── */
+.stats {
+  position: absolute;
+  bottom: 4.5rem;                 /* justo encima del marquee */
+  right: 2.5rem;
+  z-index: 2;
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-end;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.statValue {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--text-inv);
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--sans);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── Marquee ── */
+.marqueeWrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  overflow: hidden;
+  border-top: 1px solid var(--border-inv);
+  background-color: rgba(16, 12, 9, 0.5);
+  padding: 0.75rem 0;
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.marqueeWrapper:hover .marqueeTrack {
+  animation-play-state: paused;
+}
+
+.marqueeItem {
+  font-family: var(--serif);
+  font-size: 0.8125rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-muted);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.marqueeDot {
+  margin: 0 1.25rem;
+  color: var(--accent-sand);
+  font-style: normal;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .content {
+    padding: 0 1.25rem;
+    padding-top: 6rem;
+    padding-bottom: 5.5rem;
+    max-width: 100%;
+  }
+
+  .gradient {
+    background: linear-gradient(
+      to right,
+      rgba(28, 20, 16, 0.97) 0%,
+      rgba(28, 20, 16, 0.90) 60%,
+      rgba(28, 20, 16, 0.75) 100%
+    );
+  }
+
+  .stats {
+    right: 1.25rem;
+    gap: 1.5rem;
+    bottom: 4rem;
+  }
+
+  .statValue {
+    font-size: 1.5rem;
+  }
+}
