@@ -108,7 +108,7 @@
   --text-main:      var(--neutral-800);    /* #3A3632 — texto sobre fondo claro */
   --text-inv:       var(--neutral-100);    /* #F0EAE0 — texto sobre fondo oscuro */
   --text-muted:     var(--neutral-500);    /* #7C7468 — texto secundario / placeholders */
-  --text-link:      rgba(232, 220, 200, 0.7); /* #E8D9CB con opacidad para links sobre oscuro */
+
   /* Acento decorativo */
   --accent-sand:    var(--secondary-300);  /* #D6C8B5 — tono suave para detalles */
 
@@ -252,17 +252,4 @@ a {
 ul,
 ol {
   list-style: none;
-}
-
-.container {
-  width: 100%;
-  max-width: 1440px;
-  margin-inline: auto;
-    padding-inline: 1.25rem;
-}
-
-@media (min-width: 768px) {
-  .container {
-      padding-inline: 2.5rem;
-  }
 }
