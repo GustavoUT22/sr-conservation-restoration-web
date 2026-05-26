@@ -1,13 +1,9 @@
-import About from "./components/sections/about/About";
-import Hero from "./components/sections/hero/Hero";
-import Works from "./components/sections/works/Works";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <div>
-      <Hero />
-      <About/>
-      <Works />
+      <h1 className="text-4xl font-bold">Hello, Next.js!</h1>
     </div>
   );
 }
