@@ -1,6 +1,188 @@
-.header-logo {
+/*
+ * Header.module.css
+ *
+ * Variables consumidas de globals.css:
+ *   --bg-dark        → fondo del header (primary-900 = #1C1410)
+ *   --text-inv       → color del logo y links (neutral-100 = #F0EAE0)
+ *   --text-muted     → color hover de los links (neutral-500 = #7C7468)
+ *   --surface        → fondo del drawer (primary-800 = #251E1A)
+ *   --sans           → tipografía DM Sans
+ *   --border-inv     → borde inferior sutil (rgba warm 8%)
+ */
+
+/* ── Header base ── */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 1.25rem 2.5rem;
+
+  background-color: rgba(28, 20, 16, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border-bottom: 1px solid var(--border-inv);
+}
+
+/* ── Logo ── */
+.logo {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--text-inv);
   text-transform: uppercase;
-  font-size: 10px;
-  letter-spacing: 0.22rem;
-  
+  transition: opacity 0.2s ease;
+  z-index: 210;
+}
+
+.logo:hover {
+  opacity: 0.7;
+}
+
+/* ── Nav desktop ── */
+.nav {
+  display: flex;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.navLink {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-inv);
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--text-muted);
+}
+
+/* ── Botón hamburguesa ── */
+.menuBtn {
+  display: none;                   /* oculto en desktop */
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-inv);
+  padding: 0.25rem;
+  z-index: 210;
+  transition: opacity 0.2s ease;
+}
+
+.menuBtn:hover {
+  opacity: 0.7;
+}
+
+/* ── Overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background-color: rgba(16, 12, 9, 0.6);   /* primary-950 con alpha */
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.overlayVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Drawer mobile ── */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 160;
+  width: min(75vw, 280px);
+
+  background-color: var(--surface);         /* primary-800 = #251E1A */
+  border-left: 1px solid var(--border-inv);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+/* ── Lista dentro del drawer ── */
+.drawerList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.drawerItem {
+  opacity: 0;
+  transform: translateX(16px);
+  transition:
+    opacity 0.3s ease calc(var(--i) * 60ms + 100ms),
+    transform 0.3s ease calc(var(--i) * 60ms + 100ms);
+}
+
+/* Activa la animación de entrada cuando el drawer está abierto */
+.drawerOpen .drawerItem {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.drawerLink {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-inv);
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border-inv);
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.drawerLink:hover {
+  color: var(--text-muted);
+  padding-left: 0.5rem;
+}
+
+/* ── Breakpoint mobile ── */
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem 1.25rem;
+  }
+
+  .nav {
+    display: none;               /* oculta el nav desktop */
+  }
+
+  .menuBtn {
+    display: flex;               /* muestra el botón hamburguesa */
+  }
 }
