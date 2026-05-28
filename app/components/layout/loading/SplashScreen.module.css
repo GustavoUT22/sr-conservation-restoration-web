@@ -1,0 +1,37 @@
+/* ── Overlay ─────────────────────────────────────────────── */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.splashExit {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Logo ────────────────────────────────────────────────── */
+.logo {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--text-inv);
+
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity  0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logoVisible {
+  opacity: 1;
+  transform: translateY(0);
+}

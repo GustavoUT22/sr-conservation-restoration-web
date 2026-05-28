@@ -1,71 +1,28 @@
-'use client';
+"use client";
+import styles from "./About.module.css";
 
-import styles from './About.module.css';
-
-const education = [
-  { year: '2021', desc: 'Bachillerato en Conservación y Restauración — UNMSM' },
-  { year: '2022', desc: 'Taller intensivo de pintura colonial — Cusco' },
-  { year: '2023', desc: 'Práctica profesional — Museo de Arte de Lima (MALI)' },
-  { year: '2024', desc: 'Certificación en conservación preventiva — ICCROM' },
-];
-
-const stats = [
-  { value: '3+',  label: 'Años activa' },
-  { value: '20+', label: 'Obras' },
-  { value: '4',   label: 'Instituciones' },
-];
-
-export default function SobreMi() {
+const About: React.FC = () => {
   return (
-    <section className={styles.section} id="sobre-mi">
+    <section className={styles.about} id="about-me">
       <div className={styles.inner}>
+        <p className={styles.label}>Sobre mí</p>
 
-        {/* ── Left column ── */}
-        <div className={styles.left}>
-          <p className={styles.bio}>
-            Tengo veintitantos años y una obsesión: entender qué le pasa a una obra
-            cuando el tiempo la toca. Estudié restauración porque quería un oficio que
-            exigiera paciencia, precisión y sensibilidad al mismo tiempo. Lo encontré,
-            y cada pieza que llega a mis manos me recuerda por qué.
-          </p>
+        <blockquote className={styles.quote}>
+          “Cada pieza merece el mismo cuidado con el que fue creada.”
+        </blockquote>
+        {/* “Conservar el patrimonio también es preservar la memoria que forma parte de él.” */}
 
-          <blockquote className={styles.quote}>
-            <p>
-              "Todavía estoy aprendiendo a leer las obras.<br />
-              Eso, creo, es lo mejor de este oficio."
-            </p>
-          </blockquote>
+        <span className={styles.divider} aria-hidden="true" />
 
-          <p className={styles.available}>
-            Basada en Lima. Disponible para proyectos en instituciones, colecciones
-            privadas y patrimonio familiar. Trabajo despacio, con cuidado, y nunca
-            intervengo más de lo necesario.
-          </p>
-
-          <div className={styles.stats}>
-            {stats.map(({ value, label }) => (
-              <div key={label} className={styles.stat}>
-                <span className={styles.statValue}>{value}</span>
-                <span className={styles.statLabel}>{label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Right column ── */}
-        <div className={styles.right}>
-          <span className={styles.sectionLabel}>Formación</span>
-          <ul className={styles.educationList}>
-            {education.map(({ year, desc }) => (
-              <li key={year} className={styles.educationItem}>
-                <span className={styles.educationYear}>{year}</span>
-                <span className={styles.educationDesc}>{desc}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
+        <p className={styles.body}>
+          He participado en proyectos de conservación y restauración de bienes
+          culturales, trabajando con pintura, escultura, cerámica y otras piezas
+          patrimoniales. En cada proceso busco cuidar tanto la integridad
+          material de la obra como la historia que conserva.
+        </p>
       </div>
     </section>
   );
-}
+};
+
+export default About;
