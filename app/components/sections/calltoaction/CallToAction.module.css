@@ -1,0 +1,117 @@
+/*
+ * CallToAction.module.css
+ *
+ * Variables consumed from globals.css:
+ *   --bg-light       → section background (tertiary-200 = #F5F1EA)
+ *   --text-main      → body text on light bg (neutral-800 = #3A3632)
+ *   --text-muted     → description text (neutral-500 = #7C7468)
+ *   --accent-sand    → decorative top line
+ *   --border-inv     → bottom separator (used with adjusted opacity for light bg)
+ *   --serif          → Playfair Display
+ *   --sans           → DM Sans
+ */
+
+/* ── Section ── */
+.section {
+  background-color: var(--bg-light);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Inner: centered content ── */
+.inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 6rem 2.5rem 5rem;
+  gap: 0;
+}
+
+/* ── Decorative top line ── */
+.topLine {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+  margin-bottom: 2.5rem;
+  opacity: 0.8;
+}
+
+/* ── Title ── */
+.title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4.5vw, 3.75rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+  margin-bottom: 1.75rem;
+  max-width: 26ch;
+}
+
+/* ── Description ── */
+.description {
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--text-muted);
+  max-width: 52ch;
+  margin-bottom: 2.75rem;
+}
+
+/* ── CTA button ── */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neutral-100, #F0EAE0);
+  background-color: var(--primary-800, #251E1A);
+  padding: 1.125rem 2.75rem;
+  transition: background-color 0.25s ease, opacity 0.2s ease;
+}
+
+.cta:hover {
+  background-color: var(--primary-900, #1C1410);
+  opacity: 0.9;
+}
+
+/* ── Bottom bar ── */
+.bottom {
+  border-top: 1px solid rgba(58, 54, 50, 0.12);
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.bottomText {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* ── Responsive: mobile ── */
+@media (max-width: 768px) {
+  .inner {
+    padding: 4.5rem 1.25rem 4rem;
+  }
+
+  .title {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+
+  .description {
+    font-size: 0.875rem;
+  }
+
+  .bottom {
+    padding: 1.25rem 1.25rem;
+  }
+}
