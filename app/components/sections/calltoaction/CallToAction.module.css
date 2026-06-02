@@ -2,63 +2,108 @@
  * CallToAction.module.css
  *
  * Variables consumed from globals.css:
- *   --bg-light       → section background (tertiary-200 = #F5F1EA)
- *   --text-main      → body text on light bg (neutral-800 = #3A3632)
- *   --text-muted     → description text (neutral-500 = #7C7468)
- *   --accent-sand    → decorative top line
- *   --border-inv     → bottom separator (used with adjusted opacity for light bg)
+ *   --bg-dark        → fallback background
+ *   --text-inv       → text on dark (neutral-100)
+ *   --text-muted     → description text (neutral-500)
+ *   --accent-sand    → eyebrow line + italic accent
  *   --serif          → Playfair Display
  *   --sans           → DM Sans
  */
 
 /* ── Section ── */
 .section {
-  background-color: var(--bg-light);
+  position: relative;
+  width: 100%;
+  min-height: 520px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-dark);
+  overflow: hidden;
 }
 
-/* ── Inner: centered content ── */
-.inner {
-  flex: 1;
+/* ── Video ── */
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+/* ── Overlay: deep cinematic dark ── */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 12, 9, 0.70) 0%,
+    rgba(16, 12, 9, 0.82) 100%
+  );
+}
+
+/* ── Content ── */
+.content {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 6rem 2.5rem 5rem;
+  padding: 5rem 2.5rem;
   gap: 0;
 }
 
-/* ── Decorative top line ── */
-.topLine {
+/* ── Eyebrow ── */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--sans);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+  margin-bottom: 1.75rem;
+}
+
+.eyebrowLine {
   display: block;
-  width: 2.5rem;
+  width: 2rem;
   height: 1px;
   background-color: var(--accent-sand);
-  margin-bottom: 2.5rem;
-  opacity: 0.8;
+  opacity: 0.7;
+  flex-shrink: 0;
 }
 
 /* ── Title ── */
 .title {
   font-family: var(--serif);
-  font-size: clamp(2rem, 4.5vw, 3.75rem);
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
   font-weight: 400;
-  line-height: 1.12;
+  line-height: 1.1;
+  color: var(--text-inv);
   letter-spacing: -0.01em;
-  color: var(--text-main);
-  margin-bottom: 1.75rem;
-  max-width: 26ch;
+  margin-bottom: 1.25rem;
+}
+
+.titleEm {
+  font-style: italic;
+  color: var(--accent-sand);
 }
 
 /* ── Description ── */
 .description {
   font-family: var(--sans);
   font-size: 0.9375rem;
-  line-height: 1.75;
+  line-height: 1.65;
   color: var(--text-muted);
-  max-width: 52ch;
-  margin-bottom: 2.75rem;
+  max-width: 36ch;
+  margin-bottom: 2.5rem;
 }
 
 /* ── CTA button ── */
@@ -71,47 +116,31 @@
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--neutral-100, #F0EAE0);
-  background-color: var(--primary-800, #251E1A);
+  color: var(--text-inv);
+  background-color: rgba(37, 30, 26, 0.75);
+  border: 1px solid rgba(240, 234, 224, 0.3);
   padding: 1.125rem 2.75rem;
-  transition: background-color 0.25s ease, opacity 0.2s ease;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .cta:hover {
-  background-color: var(--primary-900, #1C1410);
-  opacity: 0.9;
-}
-
-/* ── Bottom bar ── */
-.bottom {
-  border-top: 1px solid rgba(58, 54, 50, 0.12);
-  padding: 1.5rem 2.5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.bottomText {
-  font-family: var(--sans);
-  font-size: 0.8125rem;
-  color: var(--text-muted);
-  letter-spacing: 0.02em;
+  background-color: rgba(37, 30, 26, 0.95);
+  border-color: var(--accent-sand);
 }
 
 /* ── Responsive: mobile ── */
 @media (max-width: 768px) {
-  .inner {
-    padding: 4.5rem 1.25rem 4rem;
+  .section {
+    min-height: 420px;
+  }
+
+  .content {
+    padding: 4rem 1.25rem;
   }
 
   .title {
-    font-size: clamp(1.75rem, 7vw, 2.5rem);
-  }
-
-  .description {
-    font-size: 0.875rem;
-  }
-
-  .bottom {
-    padding: 1.25rem 1.25rem;
+    font-size: clamp(2rem, 8vw, 2.75rem);
   }
 }
