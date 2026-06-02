@@ -8,8 +8,8 @@ import styles from './Header.module.css';
 
 const navLinks = [
   { label: 'Obra',      href: '#obra' },
-  { label: 'Servicios', href: '#servicios' },
-  { label: 'Sobre mí', href: '#sobre-mi' },
+  { label: 'Servicios', href: '#ss' },
+  { label: 'Sobre mí', href: '/about' },
   { label: 'Contacto',  href: '#contacto' },
 ];
 
