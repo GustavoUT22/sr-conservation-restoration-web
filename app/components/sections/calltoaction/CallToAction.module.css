@@ -1,0 +1,146 @@
+/*
+ * CallToAction.module.css
+ *
+ * Variables consumed from globals.css:
+ *   --bg-dark        → fallback background
+ *   --text-inv       → text on dark (neutral-100)
+ *   --text-muted     → description text (neutral-500)
+ *   --accent-sand    → eyebrow line + italic accent
+ *   --serif          → Playfair Display
+ *   --sans           → DM Sans
+ */
+
+/* ── Section ── */
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-dark);
+  overflow: hidden;
+}
+
+/* ── Video ── */
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+/* ── Overlay: deep cinematic dark ── */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 12, 9, 0.70) 0%,
+    rgba(16, 12, 9, 0.82) 100%
+  );
+}
+
+/* ── Content ── */
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 5rem 2.5rem;
+  gap: 0;
+}
+
+/* ── Eyebrow ── */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--sans);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+  margin-bottom: 1.75rem;
+}
+
+.eyebrowLine {
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+/* ── Title ── */
+.title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text-inv);
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
+}
+
+.titleEm {
+  font-style: italic;
+  color: var(--accent-sand);
+}
+
+/* ── Description ── */
+.description {
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 36ch;
+  margin-bottom: 2.5rem;
+}
+
+/* ── CTA button ── */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-inv);
+  background-color: rgba(37, 30, 26, 0.75);
+  border: 1px solid rgba(240, 234, 224, 0.3);
+  padding: 1.125rem 2.75rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.cta:hover {
+  background-color: rgba(37, 30, 26, 0.95);
+  border-color: var(--accent-sand);
+}
+
+/* ── Responsive: mobile ── */
+@media (max-width: 768px) {
+  .section {
+    min-height: 420px;
+  }
+
+  .content {
+    padding: 4rem 1.25rem;
+  }
+
+  .title {
+    font-size: clamp(2rem, 8vw, 2.75rem);
+  }
+}
