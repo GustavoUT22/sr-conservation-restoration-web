@@ -37,124 +37,121 @@ export default function Contact() {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    // TODO: connect to form handler / API
     setSubmitted(true);
   };
 
   return (
     <section className={styles.section} id="contacto">
+      <div className={styles.inner}>
 
-      {/* ── Left panel (dark) ── */}
-      <div className={styles.panel}>
-        <span className={styles.eyebrow}>Contacto</span>
+        {/* ── Left dark panel ── */}
+        <div className={styles.panel}>
+          <span className={styles.eyebrow}>Contacto</span>
 
-        <h2 className={styles.title}>
-          Hablemos sobre
-          <br />
-          su obra
-        </h2>
+          <h2 className={styles.title}>
+            Hablemos sobre
+            <br />
+            su obra
+          </h2>
 
-        <p className={styles.description}>
-          Cada pieza tiene una historia. Cuénteme la suya y
-          evaluaremos juntos el mejor tratamiento.
-        </p>
+          <p className={styles.description}>
+            Cada pieza tiene una historia. Cuénteme la suya y
+            evaluaremos juntos el mejor tratamiento.
+          </p>
 
-        <span className={styles.divider} aria-hidden="true" />
+          <span className={styles.divider} aria-hidden="true" />
 
-        <dl className={styles.infoList}>
-          {contactInfo.map(({ label, value, href }) => (
-            <div key={label} className={styles.infoItem}>
-              <dt className={styles.infoLabel}>{label}</dt>
-              <dd className={styles.infoValue}>
-                {href
-                  ? <a href={href} className={styles.infoLink}>{value}</a>
-                  : value
-                }
-              </dd>
+          <dl className={styles.infoList}>
+            {contactInfo.map(({ label, value, href }) => (
+              <div key={label} className={styles.infoItem}>
+                <dt className={styles.infoLabel}>{label}</dt>
+                <dd className={styles.infoValue}>
+                  {href
+                    ? <a href={href} className={styles.infoLink}>{value}</a>
+                    : value
+                  }
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        {/* ── Right form panel ── */}
+        <div className={styles.formPanel}>
+          {submitted ? (
+            <div className={styles.successMsg}>
+              <span className={styles.successLine} />
+              <p className={styles.successText}>
+                Gracias por su mensaje. Le responderé en menos de 48 horas.
+              </p>
             </div>
-          ))}
-        </dl>
-      </div>
+          ) : (
+            <div className={styles.form}>
 
-      {/* ── Right panel (form) ── */}
-      <div className={styles.formPanel}>
-        {submitted ? (
-          <div className={styles.successMsg}>
-            <span className={styles.successLine} aria-hidden="true" />
-            <p className={styles.successText}>
-              Gracias por su mensaje. Le responderé en menos de 48 horas.
-            </p>
-          </div>
-        ) : (
-          <div className={styles.form}>
+              <div className={styles.row}>
+                <div className={styles.field}>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Tu nombre completo"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={styles.input}
+                    autoComplete="name"
+                  />
+                </div>
+                <div className={styles.field}>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="tu@correo.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={styles.input}
+                    autoComplete="email"
+                  />
+                </div>
+              </div>
 
-            {/* Row: name + email */}
-            <div className={styles.row}>
               <div className={styles.field}>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Tu nombre completo"
-                  value={formData.name}
+                <select
+                  name="service"
+                  value={formData.service}
                   onChange={handleChange}
-                  className={styles.input}
-                  autoComplete="name"
+                  className={`${styles.input} ${styles.select} ${!formData.service ? styles.placeholder : ''}`}
+                >
+                  <option value="" disabled>Selecciona una opción</option>
+                  {serviceOptions.map(opt => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+                <span className={styles.selectArrow} aria-hidden="true">⌄</span>
+              </div>
+
+              <div className={styles.field}>
+                <textarea
+                  name="message"
+                  placeholder="Material, estado actual, procedencia…"
+                  value={formData.message}
+                  onChange={handleChange}
+                  className={`${styles.input} ${styles.textarea}`}
+                  rows={5}
                 />
               </div>
-              <div className={styles.field}>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="tu@correo.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={styles.input}
-                  autoComplete="email"
-                />
-              </div>
-            </div>
 
-            {/* Select */}
-            <div className={styles.field}>
-              <select
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                className={`${styles.input} ${styles.select} ${!formData.service ? styles.placeholder : ''}`}
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className={styles.submit}
               >
-                <option value="" disabled>Selecciona una opción</option>
-                {serviceOptions.map(opt => (
-                  <option key={opt} value={opt}>{opt}</option>
-                ))}
-              </select>
-              <span className={styles.selectArrow} aria-hidden="true">⌄</span>
+                Enviar mensaje
+              </button>
+
             </div>
+          )}
+        </div>
 
-            {/* Textarea */}
-            <div className={styles.field}>
-              <textarea
-                name="message"
-                placeholder="Material, estado actual, procedencia…"
-                value={formData.message}
-                onChange={handleChange}
-                className={`${styles.input} ${styles.textarea}`}
-                rows={5}
-              />
-            </div>
-
-            {/* Submit */}
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className={styles.submit}
-            >
-              Enviar mensaje
-            </button>
-
-          </div>
-        )}
       </div>
-
     </section>
   );
 }
