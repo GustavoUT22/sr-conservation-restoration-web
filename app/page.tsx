@@ -3,6 +3,7 @@ import About from "./components/sections/about/About";
 import Works from "./components/sections/works/Works";
 import Specialties from "./components/sections/specialties/Specialties";
 import Contact from "./components/sections/contact/Contact";
+import CallToAction from "./components/sections/calltoaction/CallToAction";
 ;
 
 export default function Home() {
@@ -11,7 +12,7 @@ export default function Home() {
       <Hero />
       <About />
       <Specialties />
-      {/* <CallToAction /> */}
+      <CallToAction />
       <Works />
       <Contact />
     </div>
