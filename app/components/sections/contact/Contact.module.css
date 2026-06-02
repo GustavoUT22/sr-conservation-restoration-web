@@ -1,0 +1,263 @@
+/*
+ * Contact.module.css
+ *
+ * Variables consumed from globals.css:
+ *   --bg-light       → section + form panel background (tertiary-200 = #F5F1EA)
+ *   --primary-900    → left panel background (#1C1410)
+ *   --text-inv       → text on dark panel (neutral-100)
+ *   --text-muted     → secondary text (neutral-500)
+ *   --text-main      → text on light panel (neutral-800)
+ *   --accent-sand    → eyebrow, divider, decorative elements
+ *   --serif          → Playfair Display
+ *   --sans           → DM Sans
+ */
+
+/* ── Section: two columns ── */
+.section {
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  min-height: 580px;
+  background-color: var(--bg-light);
+}
+
+/* ── Left dark panel ── */
+.panel {
+  background-color: var(--primary-900);
+  padding: 5rem 3rem 5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: clamp(2.25rem, 3.5vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text-inv);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+.description {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 34ch;
+  margin-bottom: 2.25rem;
+}
+
+.divider {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+  opacity: 0.4;
+  margin-bottom: 2.25rem;
+}
+
+/* ── Contact info list ── */
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.infoLabel {
+  font-family: var(--sans);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.infoValue {
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-inv);
+  line-height: 1.3;
+}
+
+.infoLink {
+  color: var(--text-inv);
+  transition: color 0.2s ease;
+}
+
+.infoLink:hover {
+  color: var(--accent-sand);
+}
+
+/* ── Right form panel ── */
+.formPanel {
+  background-color: var(--bg-light);
+  padding: 5rem 3.5rem 5rem 4rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* ── Form ── */
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Row: two inputs side by side */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+.field {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* ── Input base ── */
+.input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(58, 54, 50, 0.25);
+  padding: 0.625rem 0;
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.input:focus {
+  border-bottom-color: var(--text-main);
+}
+
+/* ── Select ── */
+.select {
+  cursor: pointer;
+  padding-right: 2rem;
+}
+
+.select.placeholder {
+  color: var(--text-muted);
+}
+
+.selectArrow {
+  position: absolute;
+  right: 0.25rem;
+  bottom: 0.625rem;
+  font-size: 1rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* ── Textarea ── */
+.textarea {
+  resize: none;
+  min-height: 120px;
+  line-height: 1.65;
+}
+
+/* ── Submit button ── */
+.submit {
+  align-self: flex-start;
+  margin-top: 0.75rem;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-inv);
+  background-color: var(--primary-800, #251E1A);
+  border: none;
+  padding: 1.125rem 2.5rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.submit:hover {
+  background-color: var(--primary-900, #1C1410);
+}
+
+/* ── Success state ── */
+.successMsg {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 1rem;
+}
+
+.successLine {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+}
+
+.successText {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-main);
+  max-width: 32ch;
+}
+
+/* ── Responsive: tablet ── */
+@media (max-width: 1024px) {
+  .section {
+    grid-template-columns: 44% 1fr;
+  }
+
+  .formPanel {
+    padding: 4rem 2rem 4rem 3rem;
+  }
+}
+
+/* ── Responsive: mobile ── */
+@media (max-width: 768px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 4rem 1.25rem 3.5rem;
+  }
+
+  .formPanel {
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
