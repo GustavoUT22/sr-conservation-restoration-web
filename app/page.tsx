@@ -7,7 +7,10 @@ export default function Home() {
     <div>
       <Hero />
       <About />
+      {/* <Specialties /> */}
+      {/* <CallToAction /> */}
       <Works />
+      {/* <Contact /> */}
     </div>
   );
 }
