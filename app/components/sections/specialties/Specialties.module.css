@@ -1,0 +1,225 @@
+/*
+ * Services.module.css
+ *
+ * Variables consumed from globals.css:
+ *   --bg-dark        → section background (primary-900)
+ *   --text-inv       → main text (neutral-100)
+ *   --text-muted     → secondary text (neutral-500)
+ *   --accent-sand    → eyebrow, meta labels
+ *   --border-inv     → card separators
+ *   --serif          → Playfair Display
+ *   --sans           → DM Sans
+ */
+
+/* ── Section ── */
+.section {
+  background-color: var(--bg-dark);
+  padding: 6rem 2.5rem 5rem;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: 3.5rem;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text-inv);
+}
+
+.headerDesc {
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 26ch;
+  text-align: right;
+  padding-bottom: 0.25rem;
+}
+
+/* ── Grid: 3 equal columns ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--border-inv);
+}
+
+/* Vertical separator between cards */
+.card + .card {
+  border-left: 1px solid var(--border-inv);
+}
+
+/* ── Card ── */
+.card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+/* ── Image ── */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--surface);
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.5s ease;
+  filter: grayscale(18%);
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+  filter: grayscale(0%);
+}
+
+/* ── Info below image ── */
+.info {
+  padding: 1.5rem 1.75rem 2rem;
+  border-top: 1px solid var(--border-inv);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ── Meta: "01 · Especialidad" ── */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.25rem;
+}
+
+.metaId,
+.metaDot,
+.metaCategory {
+  font-family: var(--sans);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+  opacity: 0.85;
+}
+
+.metaDot {
+  opacity: 0.45;
+}
+
+/* ── Card title ── */
+.cardTitle {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--text-inv);
+  transition: color 0.25s ease;
+}
+
+.card:hover .cardTitle {
+  color: #fff;
+}
+
+/* ── Card description ── */
+.cardDesc {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* ── CTA row ── */
+.cta {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--border-inv);
+  padding-top: 1.5rem;
+}
+
+.ctaLink {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.ctaLink:hover {
+  color: var(--accent-sand);
+}
+
+/* ── Responsive: tablet ── */
+@media (max-width: 1024px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .headerDesc {
+    text-align: left;
+    max-width: 40ch;
+  }
+}
+
+/* ── Responsive: mobile ── */
+@media (max-width: 768px) {
+  .section {
+    padding: 4rem 1.25rem 4rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    border-top: none;
+  }
+
+  .card {
+    border-top: 1px solid var(--border-inv);
+  }
+
+  .card + .card {
+    border-left: none;
+  }
+
+  .imageWrapper {
+    aspect-ratio: 16 / 9;
+  }
+
+  .info {
+    padding: 1.25rem 0 1.75rem;
+  }
+}
