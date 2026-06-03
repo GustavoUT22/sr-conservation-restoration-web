@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { RxHamburgerMenu } from 'react-icons/rx';
-import { IoCloseOutline } from 'react-icons/io5';
-import styles from './Header.module.css';
+import Link from "next/link";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { IoCloseOutline } from "react-icons/io5";
+import styles from "./Header.module.css";
 
 const navLinks = [
-  { label: 'Obra',      href: '#obra' },
-  { label: 'Servicios', href: '#ss' },
-  { label: 'Sobre mí', href: '/about' },
-  { label: 'Contacto',  href: '#contacto' },
+  { label: "Obra", href: "#obra" },
+  { label: "Servicios", href: "#ss" },
+  { label: "Sobre mí", href: "/about" },
+  { label: "Contacto", href: "#contacto" },
 ];
 
 export default function Header() {
@@ -21,14 +22,16 @@ export default function Header() {
     const handleResize = () => {
       if (window.innerWidth > 768) setMenuOpen(false);
     };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Bloquea el scroll del body cuando el menú está abierto
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
@@ -37,7 +40,12 @@ export default function Header() {
     <>
       <header className={styles.header}>
         <Link href="/" className={styles.logo} onClick={closeMenu}>
-          S.R
+          <Image
+            src="/sr-isotipo.svg"
+            alt="S.R"
+            width={80}
+            height={60}
+          />
         </Link>
 
         {/* Nav desktop */}
@@ -56,27 +64,28 @@ export default function Header() {
         {/* Botón hamburguesa (solo mobile) */}
         <button
           className={styles.menuBtn}
-          onClick={() => setMenuOpen(prev => !prev)}
-          aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
         >
-          {menuOpen
-            ? <IoCloseOutline size={22} />
-            : <RxHamburgerMenu size={20} />
-          }
+          {menuOpen ? (
+            <IoCloseOutline size={22} />
+          ) : (
+            <RxHamburgerMenu size={20} />
+          )}
         </button>
       </header>
 
       {/* Overlay */}
       <div
-        className={`${styles.overlay} ${menuOpen ? styles.overlayVisible : ''}`}
+        className={`${styles.overlay} ${menuOpen ? styles.overlayVisible : ""}`}
         onClick={closeMenu}
         aria-hidden="true"
       />
 
       {/* Drawer mobile */}
       <nav
-        className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ''}`}
+        className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ""}`}
         aria-label="Menú móvil"
       >
         <ul className={styles.drawerList}>
@@ -84,9 +93,13 @@ export default function Header() {
             <li
               key={href}
               className={styles.drawerItem}
-              style={{ '--i': i } as React.CSSProperties}
+              style={{ "--i": i } as React.CSSProperties}
             >
-              <Link href={href} className={styles.drawerLink} onClick={closeMenu}>
+              <Link
+                href={href}
+                className={styles.drawerLink}
+                onClick={closeMenu}
+              >
                 {label}
               </Link>
             </li>
