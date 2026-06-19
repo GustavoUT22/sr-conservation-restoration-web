@@ -1,104 +1,74 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "motion/react";
+import { WORKS } from "@/lib/constants";
 import styles from "./Works.module.css";
 
-const works = [
-  {
-    id: 1,
-    category: "Pintura Colonial",
-    year: "1784",
-    title: "Virgen con Niño",
-    size: "tall",
-    image_src: "/amazonia-cyr.webp",
-  },
-  {
-    id: 2,
-    category: "Restauración Escultórica",
-    year: "1650",
-    title: "Escultura sacra",
-    size: "normal",
-    image_src: "/amazonia2-cyr.webp",
-  },
-  {
-    id: 3,
-    category: "Cerámica Histórica",
-    year: "1820",
-    title: "Trabajo de conservación",
-    size: "normal",
-    image_src: "/ceramica-cyr.webp",
-  },
-  {
-    id: 4,
-    category: "Restauración Escultórica",
-    year: "1580",
-    title: "Palacio de Gobierno",
-    size: "tall",
-    image_src: "/ceramica2-cyr.webp",
-  },
-  {
-    id: 5,
-    category: "Restauración de Mural",
-    year: "1765",
-    title: "Arte histórico",
-    size: "normal",
-    image_src: "/mural-cyr-2.webp",
-  },
-  {
-    id: 6,
-    category: "Mural Barroco",
-    year: "1790",
-    title: "Mural Representativo",
-    size: "tall",
-    image_src: "/mural-cyr.webp",
-  },
-  {
-    id: 7,
-    category: "Educación Patrimonial",
-    year: "2025",
-    title: "Capacitación en conservación",
-    size: "normal",
-    image_src: "/taller-uni-cyr.webp",
-  },
-];
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
 
-const Works = () => {
+export default function Works() {
   return (
     <section className={styles.section} id="works">
-      <div className={styles.header}>
-        <div className={styles.eyebrow}>
+      <motion.div
+        className={styles.header}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ staggerChildren: 0.15 }}
+      >
+        <motion.div
+          className={styles.eyebrow}
+          variants={fadeUp}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <span className={styles.eyebrowLine} />
           <span className={styles.eyebrowText}>Trabajos seleccionados</span>
-        </div>
+        </motion.div>
 
-        <h2 className={styles.title}>
+        <motion.h2
+          className={styles.title}
+          variants={fadeUp}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           Obras intervenidas y
           <br />
           patrimonio conservado
-        </h2>
+        </motion.h2>
 
-        <p className={styles.description}>
+        <motion.p
+          className={styles.description}
+          variants={fadeUp}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           Cada intervención es un testimonio del cuidado meticuloso aplicado a
           la preservación del legado cultural.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
-      <div className={styles.grid}>
-        {works.map((work) => (
-          <article
+      <motion.div
+        className={styles.grid}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ staggerChildren: 0.08 }}
+      >
+        {WORKS.map((work) => (
+          <motion.article
             key={work.id}
             className={`${styles.card} ${styles[`card--${work.size}`]}`}
+            variants={fadeUp}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <div className={styles.imageWrapper}>
               <Image
-                src={work.image_src}
+                src={work.image}
                 alt={work.title}
                 fill
-                sizes="
-                  (max-width: 768px) 100vw,
-                  (max-width: 1024px) 50vw,
-                  33vw
-                "
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className={styles.image}
               />
             </div>
@@ -116,11 +86,9 @@ const Works = () => {
 
               <div className={styles.cardLine} />
             </div>
-          </article>
+          </motion.article>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
-};
-
-export default Works;
+}

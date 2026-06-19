@@ -1,88 +1,102 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import styles from './Hero.module.css';
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "motion/react";
+import { HOME_STATS, MARQUEE_WORDS } from "@/lib/constants";
+import styles from "./Hero.module.css";
 
-const stats = [
-  { value: '8+',  label: 'Años' },
-  { value: '60+', label: 'Obras' },
-  { value: '12',  label: 'Instituciones' },
-];
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
 
-const marqueeWords = [
-  'Documentos Históricos',
-  'Conservación',
-  'Restauración',
-  'Patrimonio Cultural',
-  'Pintura Colonial',
-  'Escultura',
-  'Documentos Históricos',
-  'Conservación',
-  'Restauración',
-  'Patrimonio Cultural',
-  'Pintura Colonial',
-  'Escultura',
-];
-
-const Hero = () => {
+export default function Hero() {
   return (
     <section className={styles.hero}>
-
-      {/* Imagen de fondo */}
       <div className={styles.bgImage}>
         <Image
-          src={"/hero-cyr-solange.webp"}
+          src="/hero-cyr-solange.webp"
           alt="Solange Rodríguez restaurando una pieza"
           fill
           priority
-          style={{ objectFit: 'cover', objectPosition: 'center top' }}
+          sizes="100vw"
+          className={styles.image}
         />
       </div>
 
-      {/* Gradiente oscuro hacia la izquierda */}
       <div className={styles.gradient} aria-hidden="true" />
 
-      {/* Contenido principal */}
-      <div className={styles.content}>
-        <div className={styles.eyebrow}>
+      <motion.div
+        className={styles.content}
+        initial="hidden"
+        animate="visible"
+        transition={{ staggerChildren: 0.15, delayChildren: 0.3 }}
+      >
+        <motion.div
+          className={styles.eyebrow}
+          variants={fadeUp}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <span className={styles.eyebrowLine} aria-hidden="true" />
-          <span className={styles.eyebrowText}>Lima, Perú · Conservación &amp; Restauración</span>
-        </div>
+          <span className={styles.eyebrowText}>
+            Lima, Perú · Conservación &amp; Restauración
+          </span>
+        </motion.div>
 
-        <h1 className={styles.heading}>
+        <motion.h1
+          className={styles.heading}
+          variants={fadeUp}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
           <span className={styles.headingFirst}>Solange</span>
           <em className={styles.headingLast}>Rodríguez</em>
-        </h1>
+        </motion.h1>
 
-        <p className={styles.tagline}>
+        <motion.p
+          className={styles.tagline}
+          variants={fadeUp}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           Devuelvo la vida a las obras que el tiempo ha tocado.
-        </p>
+        </motion.p>
 
-        <div className={styles.ctas}>
+        <motion.div
+          className={styles.ctas}
+          variants={fadeUp}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <Link href="#obra" className={styles.ctaPrimary}>
             Ver mi obra
           </Link>
           <Link href="#contacto" className={styles.ctaSecondary}>
             Contacto
           </Link>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* Estadísticas — esquina inferior derecha */}
-      <div className={styles.stats}>
-        {stats.map(({ value, label }) => (
-          <div key={label} className={styles.stat}>
+      <motion.div
+        className={styles.stats}
+        initial="hidden"
+        animate="visible"
+        transition={{ staggerChildren: 0.1, delayChildren: 1 }}
+      >
+        {HOME_STATS.map(({ value, label }) => (
+          <motion.div
+            key={label}
+            className={styles.stat}
+            variants={fadeUp}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
             <span className={styles.statValue}>{value}</span>
             <span className={styles.statLabel}>{label}</span>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      {/* Marquee */}
       <div className={styles.marqueeWrapper} aria-hidden="true">
         <div className={styles.marqueeTrack}>
-          {[...marqueeWords, ...marqueeWords].map((word, i) => (
+          {[...MARQUEE_WORDS, ...MARQUEE_WORDS].map((word, i) => (
             <span key={i} className={styles.marqueeItem}>
               {word}
               <span className={styles.marqueeDot}>·</span>
@@ -90,9 +104,6 @@ const Hero = () => {
           ))}
         </div>
       </div>
-
     </section>
   );
 }
-
-export default Hero;

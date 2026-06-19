@@ -1,60 +1,57 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import styles from './Specialties.module.css';
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "motion/react";
+import { SPECIALTIES } from "@/lib/constants";
+import styles from "./Specialties.module.css";
 
-const specialtiesData = [
-  {
-    id: '01',
-    category: 'Especialidad',
-    title: 'Pintura colonial',
-    description:
-      'Óleo sobre lienzo y tabla. Limpieza, consolidación y reintegración cromática.',
-    image: '/amazonia-cyr.webp',
-    alt: 'Pintura colonial restaurada',
-  },
-  {
-    id: '02',
-    category: 'Especialidad',
-    title: 'Escultura',
-    description:
-      'Madera policromada, piedra y metal. Tratamiento estructural y cromático.',
-    image: '/amazonia2-cyr.webp',
-    alt: 'Escultura sacra restaurada',
-  },
-  {
-    id: '03',
-    category: 'Especialidad',
-    title: 'Murales',
-    description:
-      'Pintura mural in situ. Consolidación de soporte y capa pictórica.',
-    image: '/mural-cyr.webp',
-    alt: 'Mural histórico restaurado',
-  },
-];
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
 
-const Specialties: React.FC = () => {
+export default function Specialties() {
   return (
     <section className={styles.section} id="servicios">
-      {/* ── Header ── */}
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
+      <motion.div
+        className={styles.header}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ staggerChildren: 0.15 }}
+      >
+        <motion.div
+          className={styles.headerLeft}
+          variants={fadeUp}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <span className={styles.eyebrow}>Especialidades</span>
-          <h2 className={styles.title}>
-            Áreas de intervención
-          </h2>
-        </div>
-        <p className={styles.headerDesc}>
+          <h2 className={styles.title}>Áreas de intervención</h2>
+        </motion.div>
+        <motion.p
+          className={styles.headerDesc}
+          variants={fadeUp}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           Las tres disciplinas principales de nuestra práctica de restauración.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
-      {/* ── Cards ── */}
-      <div className={styles.grid}>
-        {specialtiesData.map((item) => (
-          <article key={item.id} className={styles.card}>
-            {/* Image */}
+      <motion.div
+        className={styles.grid}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ staggerChildren: 0.12 }}
+      >
+        {SPECIALTIES.map((item) => (
+          <motion.article
+            key={item.id}
+            className={styles.card}
+            variants={fadeUp}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
             <div className={styles.imageWrapper}>
               <Image
                 src={item.image}
@@ -65,7 +62,6 @@ const Specialties: React.FC = () => {
               />
             </div>
 
-            {/* Info below image */}
             <div className={styles.info}>
               <p className={styles.meta}>
                 <span className={styles.metaId}>{item.id}</span>
@@ -75,18 +71,21 @@ const Specialties: React.FC = () => {
               <h3 className={styles.cardTitle}>{item.title}</h3>
               <p className={styles.cardDesc}>{item.description}</p>
             </div>
-          </article>
+          </motion.article>
         ))}
-      </div>
+      </motion.div>
 
-      {/* ── CTA ── */}
-      <div className={styles.cta}>
+      <motion.div
+        className={styles.cta}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
         <Link href="#obra" className={styles.ctaLink}>
           Ver todas las especialidades →
         </Link>
-      </div>
+      </motion.div>
     </section>
   );
 }
-
-export default Specialties;
