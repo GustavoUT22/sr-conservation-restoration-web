@@ -1,8 +1,7 @@
-import Hero from "./components/sections/hero/Hero";
-import About from "./components/sections/about/About";
-import Works from "./components/sections/works/Works";
-import Specialties from "./components/sections/specialties/Specialties";
-;
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Works from "@/components/sections/Works";
+import Specialties from "@/components/sections/Specialties";
 
 export default function Home() {
   return (
