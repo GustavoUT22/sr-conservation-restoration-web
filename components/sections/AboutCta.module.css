@@ -1,0 +1,117 @@
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 50svh;
+  background-color: var(--bg-dark);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.imageWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgba(28, 20, 16, 0.95) 0%,
+    rgba(28, 20, 16, 0.85) 40%,
+    rgba(28, 20, 16, 0.50) 100%
+  );
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  padding: clamp(4rem, 10vh, 6rem) clamp(1.25rem, 6vw, 6rem);
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.eyebrowLine {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+  flex-shrink: 0;
+}
+
+.eyebrowText {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+}
+
+.heading {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text-inv);
+}
+
+.body {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: clamp(0.875rem, 1.4vw, 1.0625rem);
+  line-height: 1.85;
+  color: var(--text-muted);
+  max-width: 42ch;
+}
+
+.cta {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-inv);
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--text-inv);
+  transition: color 0.2s ease, border-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.cta:hover {
+  color: var(--accent-sand);
+  border-color: var(--accent-sand);
+}
+
+@media (max-width: 768px) {
+  .section {
+    min-height: 45svh;
+  }
+
+  .gradient {
+    background: linear-gradient(
+      to right,
+      rgba(28, 20, 16, 0.97) 0%,
+      rgba(28, 20, 16, 0.90) 60%,
+      rgba(28, 20, 16, 0.75) 100%
+    );
+  }
+}

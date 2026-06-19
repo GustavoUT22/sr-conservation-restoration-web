@@ -1,10 +1,7 @@
-import Hero from "./components/sections/hero/Hero";
-import About from "./components/sections/about/About";
-import Works from "./components/sections/works/Works";
-import Specialties from "./components/sections/specialties/Specialties";
-import Contact from "./components/sections/contact/Contact";
-import CallToAction from "./components/sections/calltoaction/CallToAction";
-;
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Works from "@/components/sections/Works";
+import Specialties from "@/components/sections/Specialties";
 
 export default function Home() {
   return (
@@ -12,9 +9,7 @@ export default function Home() {
       <Hero />
       <About />
       <Specialties />
-      <CallToAction />
       <Works />
-      <Contact />
     </div>
   );
 }

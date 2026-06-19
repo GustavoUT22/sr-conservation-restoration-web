@@ -22,7 +22,7 @@
   align-items: center;
   justify-content: space-between;
 
-  padding: 1.25rem 2.5rem;
+  padding: 0.75rem 2.5rem;
 
   background-color: rgba(28, 20, 16, 0.85);
   backdrop-filter: blur(8px);
@@ -177,7 +177,7 @@
 /* ── Breakpoint mobile ── */
 @media (max-width: 768px) {
   .header {
-    padding: 1rem 1.25rem;
+    padding: 0.5rem 1.25rem;
   }
 
   .nav {

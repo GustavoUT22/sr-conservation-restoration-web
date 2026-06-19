@@ -5,28 +5,20 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoCloseOutline } from "react-icons/io5";
-import styles from "./Header.module.css";
+import { NAV_LINKS } from "@/lib/constants";
+import styles from "./Navbar.module.css";
 
-const navLinks = [
-  { label: "Obra", href: "#obra" },
-  { label: "Servicios", href: "#ss" },
-  { label: "Sobre mí", href: "/about" },
-  { label: "Contacto", href: "#contacto" },
-];
+export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  // Cierra el menú si se redimensiona a desktop
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = (): void => {
       if (window.innerWidth > 768) setMenuOpen(false);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Bloquea el scroll del body cuando el menú está abierto
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -34,7 +26,7 @@ export default function Header() {
     };
   }, [menuOpen]);
 
-  const closeMenu = () => setMenuOpen(false);
+  const closeMenu = (): void => setMenuOpen(false);
 
   return (
     <>
@@ -42,16 +34,15 @@ export default function Header() {
         <Link href="/" className={styles.logo} onClick={closeMenu}>
           <Image
             src="/sr-isotipo.svg"
-            alt="S.R"
+            alt="S.R — Conservación y Restauración"
             width={80}
             height={60}
           />
         </Link>
 
-        {/* Nav desktop */}
         <nav className={styles.nav} aria-label="Navegación principal">
           <ul className={styles.navList}>
-            {navLinks.map(({ label, href }) => (
+            {NAV_LINKS.map(({ label, href }) => (
               <li key={href}>
                 <Link href={href} className={styles.navLink}>
                   {label}
@@ -61,7 +52,6 @@ export default function Header() {
           </ul>
         </nav>
 
-        {/* Botón hamburguesa (solo mobile) */}
         <button
           className={styles.menuBtn}
           onClick={() => setMenuOpen((prev) => !prev)}
@@ -76,20 +66,18 @@ export default function Header() {
         </button>
       </header>
 
-      {/* Overlay */}
       <div
         className={`${styles.overlay} ${menuOpen ? styles.overlayVisible : ""}`}
         onClick={closeMenu}
         aria-hidden="true"
       />
 
-      {/* Drawer mobile */}
       <nav
         className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ""}`}
         aria-label="Menú móvil"
       >
         <ul className={styles.drawerList}>
-          {navLinks.map(({ label, href }, i) => (
+          {NAV_LINKS.map(({ label, href }, i) => (
             <li
               key={href}
               className={styles.drawerItem}

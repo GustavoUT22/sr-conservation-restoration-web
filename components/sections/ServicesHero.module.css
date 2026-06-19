@@ -1,0 +1,102 @@
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 60svh;
+  background-color: var(--bg-dark);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.imageWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(28, 20, 16, 0.95) 0%,
+    rgba(28, 20, 16, 0.70) 40%,
+    rgba(28, 20, 16, 0.30) 100%
+  );
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  padding: 4rem 2.5rem;
+  max-width: 720px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrowLine {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+  flex-shrink: 0;
+}
+
+.eyebrowText {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+}
+
+.heading {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text-inv);
+  margin-bottom: 1.5rem;
+}
+
+.heading::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+  margin-top: 1.25rem;
+  opacity: 0.6;
+}
+
+.tagline {
+  font-family: var(--sans);
+  font-size: clamp(0.875rem, 1.5vw, 1.0625rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 42ch;
+}
+
+@media (max-width: 768px) {
+  .section {
+    min-height: 50svh;
+  }
+
+  .content {
+    padding: 3rem 1.25rem;
+  }
+}
