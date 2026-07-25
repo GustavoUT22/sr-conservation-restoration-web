@@ -30,7 +30,7 @@
   font-family: var(--sans);
   font-size: 1rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
   color: var(--text-inv);
   margin-bottom: 1.25rem;
@@ -43,15 +43,15 @@
   font-family: var(--sans);
   font-size: 0.875rem;
   line-height: 1.65;
-  color: var(--text-muted);
-  max-width: 26ch;
+  color: var(--text-muted-inv);
+  max-width: var(--measure-tagline);
   margin-bottom: 0.5rem;
 }
 
 .location {
   font-family: var(--sans);
-  font-size: 0.8125rem;
-  color: var(--text-muted);
+  font-size: var(--text-meta);
+  color: var(--text-muted-inv);
   margin-bottom: 1.75rem;
 }
 
@@ -67,9 +67,11 @@
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  border-radius: 50%;
+  /* Was 50%. Zero radius is a locked project decision — this was the last
+     surviving exception. */
+  border-radius: 0;
   border: 1px solid var(--border-inv);
-  color: var(--text-muted);
+  color: var(--text-muted-inv);
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -87,11 +89,11 @@
 
 .groupLabel {
   font-family: var(--sans);
-  font-size: 0.5625rem;
+  font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-muted-inv);
   margin-bottom: 0.25rem;
 }
 
@@ -123,11 +125,11 @@
 
 .contactMeta {
   font-family: var(--sans);
-  font-size: 0.5625rem;
+  font-size: var(--text-label);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-muted-inv);
 }
 
 .contactValue {
@@ -151,8 +153,8 @@
 
 .copy {
   font-family: var(--sans);
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-size: var(--text-meta);
+  color: var(--text-muted-inv);
 }
 
 .legal {
@@ -162,8 +164,8 @@
 
 .legalLink {
   font-family: var(--sans);
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-size: var(--text-meta);
+  color: var(--text-muted-inv);
   transition: color 0.2s ease;
 }
 

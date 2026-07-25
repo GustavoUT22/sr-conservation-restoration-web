@@ -8,12 +8,36 @@ import type {
   CredentialGroup,
   ProcessStep,
   Service,
+  ContactFormState,
 } from "./types";
+
+// -- Contact --
+
+/**
+ * Public contact address, also where the form delivers. Single source of truth:
+ * the page, the schema and CONTACT_TO_EMAIL in the environment must agree.
+ */
+export const CONTACT_EMAIL = "solangermurrieta@gmail.com";
+
+// -- Contact form --
+
+/**
+ * Lives here rather than beside the action: a "use server" module may only
+ * export async functions, so a shared constant cannot sit next to it.
+ */
+export const INITIAL_CONTACT_STATE: ContactFormState = {
+  status: "idle",
+  message: "",
+  fieldErrors: {},
+  values: { name: "", email: "", subject: "", message: "" },
+};
 
 // -- Shared navigation --
 
 export const NAV_LINKS: NavLink[] = [
-  { label: "Obra", href: "#obra" },
+  // Root-relative so it also works from /sobre-mi, /servicios and /contacto —
+  // a bare "#obra" only resolved on the home page.
+  { label: "Obra", href: "/#obra" },
   { label: "Servicios", href: "/servicios" },
   { label: "Sobre mí", href: "/sobre-mi" },
   { label: "Contacto", href: "/contacto" },

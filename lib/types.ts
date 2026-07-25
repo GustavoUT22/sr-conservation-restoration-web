@@ -1,3 +1,18 @@
+/**
+ * Minimal JSON-LD shape. Schema.org node types are open-ended by design, so the
+ * index signature is intentional — the two required keys are what we can enforce.
+ */
+export interface JsonLdNode {
+  "@type": string;
+  "@id"?: string;
+  [key: string]: unknown;
+}
+
+export interface JsonLdGraph {
+  "@context": "https://schema.org";
+  "@graph": JsonLdNode[];
+}
+
 export interface NavLink {
   label: string;
   href: string;
@@ -50,6 +65,19 @@ export interface CredentialGroup {
 }
 
 export type IntroPhase = "enter" | "idle" | "exit" | "done";
+
+export type ContactField = "name" | "email" | "subject" | "message";
+
+export type ContactFieldErrors = Partial<Record<ContactField, string>>;
+
+export interface ContactFormState {
+  status: "idle" | "success" | "error";
+  /** User-facing message in Spanish. Empty while idle. */
+  message: string;
+  fieldErrors: ContactFieldErrors;
+  /** Echoed back so the inputs survive a failed submit. */
+  values: Record<ContactField, string>;
+}
 
 export interface ProcessStep {
   id: string;
