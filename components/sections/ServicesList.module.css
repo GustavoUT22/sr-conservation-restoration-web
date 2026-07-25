@@ -1,10 +1,11 @@
 .section {
   background-color: var(--bg-light);
-  padding: clamp(4rem, 10vh, 8rem) clamp(1.25rem, 6vw, 6rem);
+  padding-block: var(--sect-md);
+  padding-inline: var(--sect-inline);
 }
 
 .inner {
-  max-width: 1200px;
+  max-width: var(--content-max);
   margin-inline: auto;
   display: flex;
   flex-direction: column;
@@ -19,18 +20,32 @@
   align-items: start;
 }
 
-.rowReversed {
-  direction: rtl;
+/*
+ * Explicit grid placement instead of `direction: rtl` + an ltr reset on the
+ * children. The bidi trick only worked because there are exactly two direct
+ * children, and it leaks logical-property direction into the whole subtree.
+ */
+.rowReversed .imageCol {
+  grid-column: 2;
+  grid-row: 1;
 }
 
-.rowReversed > * {
-  direction: ltr;
+.rowReversed .textCol {
+  grid-column: 1;
+  grid-row: 1;
 }
 
 /* -- Image column -- */
 .imageCol {
   position: relative;
-  min-height: 400px;
+  /*
+   * aspect-ratio rather than a fixed min-height: at 800px viewport the 400px
+   * image sat beside a ~700px text column with align-items:start, leaving a
+   * large gap under the photo. Sticky keeps it beside the text as you read.
+   */
+  aspect-ratio: 3 / 4;
+  position: sticky;
+  top: calc(var(--nav-offset) + 1.5rem);
   overflow: hidden;
 }
 
@@ -49,11 +64,11 @@
 
 .serviceNumber {
   font-family: var(--sans);
-  font-size: 0.625rem;
+  font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-caps);
   color: var(--accent);
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .serviceTitle {
@@ -111,16 +126,30 @@
   background-color: var(--accent);
 }
 
-/* -- Mobile -- */
-@media (max-width: 768px) {
+/* -- Tablet: collapse before the columns get too narrow to read -- */
+@media (max-width: 900px) {
   .row,
   .rowReversed {
     grid-template-columns: 1fr;
-    direction: ltr;
+  }
+
+  /* Explicit placement has to be undone once there is a single column. */
+  .rowReversed .imageCol,
+  .rowReversed .textCol {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   .imageCol {
-    min-height: auto;
+    position: relative;
+    top: auto;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+/* -- Mobile -- */
+@media (max-width: 768px) {
+  .imageCol {
     aspect-ratio: 4 / 3;
   }
 }

@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
+import { useMotionVariants } from "@/lib/motion";
 import styles from "./Philosophy.module.css";
 
 export default function Philosophy() {
+  const v = useMotionVariants();
+
   return (
     <section className={styles.section}>
       <div className={styles.imageWrapper}>
@@ -27,21 +30,12 @@ export default function Philosophy() {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ staggerChildren: 0.2 }}
       >
-        <motion.span
-          className={styles.eyebrow}
-          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-          transition={{ duration: 0.5 }}
-        >
-          Filosofía
-        </motion.span>
-
-        <motion.blockquote
-          className={styles.quote}
-          variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-        >
-          "Conservar no es detener el tiempo, sino comprender su paso y proteger
-          lo que hace única a cada obra."
+        {/* Eyebrow dropped: the quote speaks for itself, and a label above it
+            only announced what the reader was about to work out anyway. */}
+        {/* chromatic: the statement recovers its colour, mirroring reintegration. */}
+        <motion.blockquote className={styles.quote} variants={v.chromatic}>
+          «Conservar no es detener el tiempo, sino comprender su paso y proteger
+          lo que hace única a cada obra.»
         </motion.blockquote>
 
         <motion.span
@@ -51,11 +45,7 @@ export default function Philosophy() {
           transition={{ duration: 0.6, ease: "easeOut" }}
         />
 
-        <motion.p
-          className={styles.body}
-          variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
+        <motion.p className={styles.body} variants={v.settle}>
           Mi práctica se basa en el respeto absoluto por la materia original, la
           reversibilidad de cada tratamiento y la documentación rigurosa de cada
           proceso. Cada pieza es un testimonio irrepetible que merece ser

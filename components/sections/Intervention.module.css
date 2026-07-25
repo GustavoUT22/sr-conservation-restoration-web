@@ -1,0 +1,516 @@
+/*
+ * Intervention.module.css
+ *
+ * Scroll-as-time. The structure is deliberately inverted from the usual
+ * approach: the BASE styles are the no-JavaScript, no-timeline fallback — a
+ * plain vertical list where every stage carries its own image and text. The
+ * pinned viewer only switches on inside @supports.
+ *
+ * That ordering matters. If the enhancement is the base and the fallback is the
+ * override, an unsupported browser gets a broken page; this way it gets a
+ * perfectly readable one.
+ *
+ * Variables consumed from globals.css:
+ *   --bg-dark, --surface         → ground
+ *   --text-inv, --text-muted-inv → copy
+ *   --accent-sand                → phase labels
+ *   --sect-md / --sect-inline    → rhythm
+ *   --nav-offset                 → sticky offset
+ */
+
+.section {
+  background-color: var(--bg-dark);
+  padding-block: var(--sect-md);
+  padding-inline: var(--sect-inline);
+}
+
+/* ── Intro ── */
+.intro {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: var(--text-h2);
+  font-weight: 400;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--track-tight);
+  color: var(--text-inv);
+  text-wrap: balance;
+  margin-bottom: 1rem;
+}
+
+.lead {
+  font-family: var(--sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--text-muted-inv);
+  max-width: var(--measure-intro);
+  text-wrap: pretty;
+}
+
+/* ── Track ── */
+.track {
+  max-width: var(--content-max);
+  margin-inline: auto;
+}
+
+/* The pinned viewer does not exist until the timeline is available. */
+.viewer {
+  display: none;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--surface);
+  isolation: isolate;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ── Stages (fallback layout: a readable vertical list) ── */
+.stages {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7vw, 5rem);
+}
+
+.stageInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.phase {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--accent-sand);
+}
+
+/* Numbering earns its place here: these really are ordered steps. */
+.phaseIndex {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  letter-spacing: 0;
+  opacity: 0.7;
+}
+
+.stageTitle {
+  font-family: var(--serif);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  line-height: var(--leading-heading);
+  color: var(--text-inv);
+  text-wrap: balance;
+}
+
+.stageDesc {
+  font-family: var(--sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--text-muted-inv);
+  max-width: var(--measure-body);
+  text-wrap: pretty;
+}
+
+.fallbackImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--surface);
+  margin-top: 0.5rem;
+}
+
+/*
+ * ── Stage simulation ──
+ * Temporary filters standing in for a documented sequence. Each one is tuned to
+ * read as the phase it names, and all of them come off the day real frames
+ * arrive.
+ */
+.stateSoiled {
+  filter: sepia(0.5) saturate(0.6) brightness(0.68) contrast(0.9);
+}
+
+.stateCleaned {
+  filter: sepia(0.12) saturate(0.92) brightness(0.94);
+}
+
+.stateLosses {
+  filter: saturate(0.45) brightness(0.9) contrast(1.15);
+}
+
+.stateReintegrated {
+  filter: saturate(1.05) brightness(0.98) contrast(1.04);
+}
+
+.stateFinished {
+  filter: saturate(1.12) contrast(1.06) brightness(1.02);
+}
+
+.disclaimer {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted-inv);
+  opacity: 0.65;
+}
+
+/*
+ * ══════════════════════════════════════════════════════════════
+ * ENHANCEMENT — scroll-driven pinned viewer.
+ * Everything above stays as the fallback for browsers without it.
+ * ══════════════════════════════════════════════════════════════
+ */
+@supports (animation-timeline: view()) and (animation-range: contain 0%) {
+  .track {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+    /* Declares the timeline the layers animate against. */
+    view-timeline-name: --intervention;
+    view-timeline-axis: block;
+  }
+
+  .viewer {
+    display: block;
+    position: sticky;
+    /* Pinned just below the fixed navbar, vertically centred in the viewport. */
+    top: calc(var(--nav-offset) + 2vh);
+    height: min(76vh, 42rem);
+  }
+
+  /*
+   * The stack needs headroom: cards behind rise above the front one, so the
+   * frame sits low inside the pinned area and the space above is left for the
+   * deck to fan out into.
+   */
+  .viewer {
+    display: flex;
+    align-items: flex-end;
+    padding-block: 2vh 5vh;
+  }
+
+  .frame {
+    height: 74%;
+    aspect-ratio: auto;
+    /* Must spill: clipping here removes the peeking edges, which is the only
+       thing that makes it read as a stack rather than a cross-fade. */
+    overflow: visible;
+    background-color: transparent;
+  }
+
+  /*
+   * ── The deck ──
+   *
+   * Three or four stages are visible at once, stacked back into the frame and
+   * peeking out above one another. Scrolling deals the front card away and
+   * every card behind it advances one place.
+   *
+   * All five layers share one range (0→100%) and differ only in their
+   * keyframes: each card's timeline describes its own journey through the
+   * stack. That keeps the choreography readable — you can see, per card, which
+   * position it holds at each point of the scroll — instead of hiding it in
+   * offset ranges.
+   *
+   * Stack positions, front to back. Cards are anchored at their base and rise
+   * behind one another, so each one shows a clear band above the card in front
+   * — that band is the whole effect, and it was far too narrow before.
+   *
+   *   front  translateY(0)    scale(1)     brightness(1)
+   *   p2     translateY(-14%) scale(0.94)  brightness(0.62)
+   *   p3     translateY(-26%) scale(0.88)  brightness(0.4)
+   *   p4     translateY(-36%) scale(0.82)  brightness(0.26)
+   *   p5     translateY(-44%) scale(0.77)  brightness(0.18)
+   *   out    translateY(26%)  scale(1.06)  opacity(0)
+   */
+  .layer {
+    /* Front card sits on top; each card behind keeps its place until it
+       advances, so z-index is static and simply inverse to source order. */
+    z-index: calc(10 - var(--i));
+    /* Anchored at the base: scaling a card down then lifting it makes it rise
+       out of the top of the stack, which is how a real deck fans. */
+    transform-origin: 50% 100%;
+    border-radius: 0;
+    animation: linear both;
+    animation-timeline: --intervention;
+    animation-range: contain 0% contain 100%;
+    will-change: transform, opacity, filter;
+    /* Each card casts a hairline edge so the stack reads as separate sheets
+       rather than as one blurred image. box-shadow is banned, so the edge is a
+       border on the layer itself. */
+    outline: 1px solid rgba(240, 234, 224, 0.14);
+    outline-offset: -1px;
+  }
+
+  .layer:nth-child(1) {
+    animation-name: cardOne;
+  }
+  .layer:nth-child(2) {
+    animation-name: cardTwo;
+  }
+  .layer:nth-child(3) {
+    animation-name: cardThree;
+  }
+  .layer:nth-child(4) {
+    animation-name: cardFour;
+  }
+  .layer:nth-child(5) {
+    animation-name: cardFive;
+  }
+
+  /* Starts at the front, is dealt away first, then stays gone. */
+  @keyframes cardOne {
+    0% {
+      transform: translateY(0) scale(1);
+      filter: brightness(1);
+      opacity: 1;
+    }
+    18% {
+      transform: translateY(26%) scale(1.06);
+      filter: brightness(1);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(26%) scale(1.06);
+      opacity: 0;
+    }
+  }
+
+  @keyframes cardTwo {
+    0% {
+      transform: translateY(-14%) scale(0.94);
+      filter: brightness(0.62);
+      opacity: 1;
+    }
+    20% {
+      transform: translateY(0) scale(1);
+      filter: brightness(1);
+      opacity: 1;
+    }
+    38% {
+      transform: translateY(26%) scale(1.06);
+      filter: brightness(1);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(26%) scale(1.06);
+      opacity: 0;
+    }
+  }
+
+  @keyframes cardThree {
+    0% {
+      transform: translateY(-26%) scale(0.88);
+      filter: brightness(0.4);
+      opacity: 1;
+    }
+    20% {
+      transform: translateY(-14%) scale(0.94);
+      filter: brightness(0.62);
+      opacity: 1;
+    }
+    40% {
+      transform: translateY(0) scale(1);
+      filter: brightness(1);
+      opacity: 1;
+    }
+    58% {
+      transform: translateY(26%) scale(1.06);
+      filter: brightness(1);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(26%) scale(1.06);
+      opacity: 0;
+    }
+  }
+
+  @keyframes cardFour {
+    0% {
+      transform: translateY(-36%) scale(0.82);
+      filter: brightness(0.26);
+      opacity: 0.95;
+    }
+    20% {
+      transform: translateY(-26%) scale(0.88);
+      filter: brightness(0.4);
+      opacity: 1;
+    }
+    40% {
+      transform: translateY(-14%) scale(0.94);
+      filter: brightness(0.62);
+      opacity: 1;
+    }
+    60% {
+      transform: translateY(0) scale(1);
+      filter: brightness(1);
+      opacity: 1;
+    }
+    78% {
+      transform: translateY(26%) scale(1.06);
+      filter: brightness(1);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(26%) scale(1.06);
+      opacity: 0;
+    }
+  }
+
+  /* Deepest in the stack, and the one left on screen at the end. */
+  @keyframes cardFive {
+    0% {
+      transform: translateY(-44%) scale(0.77);
+      filter: brightness(0.18);
+      opacity: 0.85;
+    }
+    20% {
+      transform: translateY(-36%) scale(0.82);
+      filter: brightness(0.26);
+      opacity: 0.95;
+    }
+    40% {
+      transform: translateY(-26%) scale(0.88);
+      filter: brightness(0.4);
+      opacity: 1;
+    }
+    60% {
+      transform: translateY(-14%) scale(0.94);
+      filter: brightness(0.62);
+      opacity: 1;
+    }
+    80%,
+    100% {
+      transform: translateY(0) scale(1);
+      filter: brightness(1);
+      opacity: 1;
+    }
+  }
+
+  /* The notes column scrolls past the pinned piece. */
+  .stages {
+    gap: 0;
+  }
+
+  .stage {
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .stage:last-child {
+    /* Lets the final state hold on screen instead of scrolling straight out. */
+    min-height: 70vh;
+  }
+
+  .fallbackImage {
+    display: none;
+  }
+
+  /* Each note fades with its own view timeline — no shared state, no JS. */
+  .stageInner {
+    animation: noteIn linear both;
+    animation-timeline: view();
+    animation-range: entry 15% cover 32%;
+  }
+
+  @keyframes noteIn {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  @supports (animation-timeline: view()) {
+    .track {
+      grid-template-columns: 1fr;
+    }
+
+    .viewer {
+      /* Pinning a tall image above the text leaves no room to read on a phone,
+         so below this width the sequence returns to the stacked list. */
+      display: none;
+    }
+
+    .fallbackImage {
+      display: block;
+    }
+
+    .stage {
+      min-height: 0;
+      display: block;
+    }
+
+    .stages {
+      gap: clamp(3rem, 7vw, 5rem);
+    }
+  }
+}
+
+/*
+ * Reduced motion: scroll-linked animation is motion by definition. Show every
+ * stage at rest, in order, with nothing tied to scroll position.
+ */
+@media (prefers-reduced-motion: reduce) {
+  @supports (animation-timeline: view()) {
+    .track {
+      display: block;
+    }
+
+    .viewer {
+      display: none;
+    }
+
+    .fallbackImage {
+      display: block;
+    }
+
+    .stage {
+      min-height: 0;
+      display: block;
+    }
+
+    .stages {
+      gap: clamp(3rem, 7vw, 5rem);
+    }
+
+    .stageInner,
+    .layer {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

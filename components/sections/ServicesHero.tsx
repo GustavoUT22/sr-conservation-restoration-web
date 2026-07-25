@@ -2,14 +2,12 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
+import { useMotionVariants } from "@/lib/motion";
 import styles from "./ServicesHero.module.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function ServicesHero() {
+  const v = useMotionVariants();
+
   return (
     <section className={styles.section}>
       <div className={styles.imageWrapper}>
@@ -34,7 +32,7 @@ export default function ServicesHero() {
       >
         <motion.div
           className={styles.eyebrow}
-          variants={fadeUp}
+          variants={v.emerge}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <span className={styles.eyebrowLine} aria-hidden="true" />
@@ -43,7 +41,7 @@ export default function ServicesHero() {
 
         <motion.h1
           className={styles.heading}
-          variants={fadeUp}
+          variants={v.emerge}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           Conservación y restauración profesional
@@ -51,7 +49,7 @@ export default function ServicesHero() {
 
         <motion.p
           className={styles.tagline}
-          variants={fadeUp}
+          variants={v.emerge}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           Cada intervención sigue criterios de mínima intervención,

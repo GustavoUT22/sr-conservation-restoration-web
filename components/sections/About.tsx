@@ -1,11 +1,18 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useMotionVariants } from "@/lib/motion";
+import Craquelure from "@/components/ui/Craquelure";
 import styles from "./About.module.css";
 
 export default function About() {
+  const v = useMotionVariants();
+
   return (
     <section className={styles.about} id="about-me">
+      {/* The crack network seals as the claim about care comes into view. */}
+      <Craquelure opacity={0.12} />
+
       <motion.div
         className={styles.inner}
         initial="hidden"
@@ -13,20 +20,9 @@ export default function About() {
         viewport={{ once: true, margin: "-80px" }}
         transition={{ staggerChildren: 0.2 }}
       >
-        <motion.p
-          className={styles.label}
-          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-          transition={{ duration: 0.5 }}
-        >
-          Sobre mí
-        </motion.p>
-
-        <motion.blockquote
-          className={styles.quote}
-          variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          "Cada pieza merece el mismo cuidado con el que fue creada."
+        {/* Label dropped — 9px uppercase over a quote added nothing. */}
+        <motion.blockquote className={styles.quote} variants={v.chromatic}>
+          «Cada pieza merece el mismo cuidado con el que fue creada.»
         </motion.blockquote>
 
         <motion.span
@@ -36,11 +32,7 @@ export default function About() {
           transition={{ duration: 0.6, ease: "easeOut" }}
         />
 
-        <motion.p
-          className={styles.body}
-          variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
+        <motion.p className={styles.body} variants={v.settle}>
           He participado en proyectos de conservación y restauración de bienes
           culturales, trabajando con pintura, escultura, cerámica y otras piezas
           patrimoniales. En cada proceso busco cuidar tanto la integridad

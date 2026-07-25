@@ -1,34 +1,25 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "motion/react";
+import { useMotionVariants } from "@/lib/motion";
+import CleaningReveal from "@/components/ui/CleaningReveal";
 import styles from "./Biography.module.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function Biography() {
+  const v = useMotionVariants();
+
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
-        <motion.div
+        {/* The portrait is uncovered with the same gesture she uses on a piece:
+            revealing the person the way she reveals the work. */}
+        {/* TODO: Replace with real portrait of Solange */}
+        <CleaningReveal
+          src="/hero-cyr-solange.webp"
+          alt="Solange Rodríguez trabajando en su taller de restauración"
+          sizes="(max-width: 768px) 100vw, 45vw"
           className={styles.imageCol}
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          {/* TODO: Replace with real portrait of Solange */}
-          <Image
-            src="/hero-cyr-solange.webp"
-            alt="Solange Rodríguez trabajando en su taller de restauración"
-            fill
-            sizes="(max-width: 768px) 100vw, 45vw"
-            className={styles.image}
-          />
-        </motion.div>
+        />
 
         <motion.div
           className={styles.textCol}
@@ -37,13 +28,9 @@ export default function Biography() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ staggerChildren: 0.15, delayChildren: 0.2 }}
         >
-          <motion.blockquote
-            className={styles.quote}
-            variants={fadeUp}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            "Cada intervención es un diálogo entre el presente y la historia de
-            la obra."
+          <motion.blockquote className={styles.quote} variants={v.chromatic}>
+            «Cada intervención es un diálogo entre el presente y la historia de
+            la obra.»
           </motion.blockquote>
 
           <motion.span
@@ -55,7 +42,7 @@ export default function Biography() {
 
           <motion.p
             className={styles.body}
-            variants={fadeUp}
+            variants={v.emerge}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             Soy conservadora y restauradora de bienes culturales con más de ocho
@@ -67,7 +54,7 @@ export default function Biography() {
 
           <motion.p
             className={styles.body}
-            variants={fadeUp}
+            variants={v.emerge}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             A lo largo de mi trayectoria he intervenido pintura colonial sobre
@@ -80,7 +67,7 @@ export default function Biography() {
 
           <motion.p
             className={styles.body}
-            variants={fadeUp}
+            variants={v.emerge}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             Creo firmemente que conservar el patrimonio material es también

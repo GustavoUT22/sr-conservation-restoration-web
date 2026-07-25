@@ -3,14 +3,12 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { SERVICES } from "@/lib/constants";
+import { useMotionVariants } from "@/lib/motion";
 import styles from "./ServicesList.module.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function ServicesList() {
+  const v = useMotionVariants();
+
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
@@ -42,7 +40,7 @@ export default function ServicesList() {
 
               <motion.div
                 className={styles.textCol}
-                variants={fadeUp}
+                variants={v.stratum}
                 transition={{ duration: 0.6, ease: "easeOut" }}
               >
                 <span className={styles.serviceNumber}>{service.id}</span>
