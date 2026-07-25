@@ -6,8 +6,10 @@ export const metadata: Metadata = {
   title: "Contacto — Solange Rodríguez",
   description:
     "Contacta a Solange Rodríguez para consultas sobre conservación y restauración de bienes culturales en Lima, Perú.",
+  alternates: { canonical: "/contacto" },
   openGraph: {
     title: "Contacto — Solange Rodríguez",
+    url: "/contacto",
     description:
       "Contacta a Solange Rodríguez para servicios profesionales de conservación y restauración.",
     locale: "es_PE",
@@ -17,9 +19,9 @@ export const metadata: Metadata = {
 
 export default function ContactoPage() {
   return (
-    <>
+    <main id="contenido">
       <ContactHero />
       <ContactInfo />
-    </>
+    </main>
   );
 }

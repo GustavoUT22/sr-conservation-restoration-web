@@ -11,8 +11,10 @@ export const metadata: Metadata = {
   title: "Sobre mí — Solange Rodríguez",
   description:
     "Conservadora y restauradora de bienes culturales con más de ocho años de experiencia en pintura colonial, escultura, cerámica y murales en Lima, Perú.",
+  alternates: { canonical: "/sobre-mi" },
   openGraph: {
     title: "Sobre mí — Solange Rodríguez",
+    url: "/sobre-mi",
     description:
       "Conservadora y restauradora de bienes culturales con más de ocho años de experiencia en Lima, Perú.",
     locale: "es_PE",
@@ -22,14 +24,17 @@ export const metadata: Metadata = {
 
 export default function SobreMiPage() {
   return (
-    <>
+    /* Timeline moved up behind Biography: the career arc continues the life
+       story, and it leaves Philosophy — the only full-bleed moment here — as
+       the centre hinge instead of stranding three identical sections in a row. */
+    <main id="contenido">
       <AboutHero />
       <Biography />
+      <Timeline />
       <Philosophy />
       <Process />
-      <Timeline />
       <Credentials />
       <AboutCta />
-    </>
+    </main>
   );
 }
