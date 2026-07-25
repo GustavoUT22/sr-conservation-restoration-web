@@ -82,8 +82,8 @@ export const SPECIALTIES: Specialty[] = [
     title: "Escultura",
     description:
       "Madera policromada, piedra y metal. Tratamiento estructural y cromático.",
-    image: "/amazonia2-cyr.webp",
-    alt: "Escultura sacra restaurada",
+    image: "/wm-gremio-xix.webp",
+    alt: "Pieza policromada del siglo XIX tras su intervención",
   },
   {
     id: "03",
@@ -96,6 +96,12 @@ export const SPECIALTIES: Specialty[] = [
   },
 ];
 
+/**
+ * PLACEHOLDER IMAGERY — the `/wm-*` files are Wikimedia Commons material, in
+ * place only to preview the design with varied artwork. See CREDITS.md: they
+ * carry attribution obligations and must be replaced with Solange's own
+ * photography before launch.
+ */
 export const WORKS: Work[] = [
   {
     id: 1,
@@ -103,15 +109,15 @@ export const WORKS: Work[] = [
     year: "1784",
     title: "Virgen con Niño",
     size: "tall",
-    image: "/amazonia-cyr.webp",
+    image: "/wm-madonna-jorge.webp",
   },
   {
     id: 2,
-    category: "Restauración Escultórica",
-    year: "1650",
-    title: "Escultura sacra",
+    category: "Retrato Decimonónico",
+    year: "1850",
+    title: "Retrato de dama",
     size: "normal",
-    image: "/amazonia2-cyr.webp",
+    image: "/wm-retrato-xix.webp",
   },
   {
     id: 3,
@@ -123,19 +129,19 @@ export const WORKS: Work[] = [
   },
   {
     id: 4,
-    category: "Restauración Escultórica",
-    year: "1580",
-    title: "Palacio de Gobierno",
+    category: "Pintura Religiosa",
+    year: "1852",
+    title: "Aparición de la Virgen",
     size: "tall",
-    image: "/ceramica2-cyr.webp",
+    image: "/wm-madonna-dominicus.webp",
   },
   {
     id: 5,
-    category: "Restauración de Mural",
-    year: "1765",
-    title: "Arte histórico",
+    category: "Limpieza de Barniz",
+    year: "1636",
+    title: "Retrato ecuestre",
     size: "normal",
-    image: "/mural-cyr-2.webp",
+    image: "/wm-limpieza-mfa.webp",
   },
   {
     id: 6,
@@ -147,11 +153,11 @@ export const WORKS: Work[] = [
   },
   {
     id: 7,
-    category: "Educación Patrimonial",
+    category: "Documentación Patrimonial",
     year: "2025",
-    title: "Capacitación en conservación",
+    title: "Registro en laboratorio",
     size: "normal",
-    image: "/taller-uni-cyr.webp",
+    image: "/wm-laboratorio.webp",
   },
 ];
 
