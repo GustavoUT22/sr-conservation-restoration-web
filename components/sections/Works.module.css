@@ -256,22 +256,54 @@
   }
 }
 
+/*
+ * ── Phone: a gallery you swipe, not a column you scroll past ──
+ *
+ * Stacked vertically at ~82vh each, seven pieces ran to nearly six screens —
+ * half the home page was this one section. Laid out as a snapping band it
+ * occupies one screen and the sideways swipe is the natural gesture on a
+ * phone. (The timeline went the other way for the opposite reason: it carries
+ * paragraphs, and reading them sideways fights the reader. Images don't.)
+ */
 @media (max-width: 768px) {
   .grid {
-    grid-template-columns: 1fr;
-    /* Nearly the full screen per piece. On a phone the gallery reads as one
-       work at a time, so each one should command the viewport instead of
-       sitting at two-thirds of it. */
-    grid-auto-rows: 82vh;
-    gap: 1px;
+    display: flex;
+    grid-template-columns: none;
+    grid-auto-rows: auto;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    gap: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-sand) transparent;
+  }
+
+  .grid:focus-visible {
+    outline: 2px solid var(--accent-sand);
+    outline-offset: -4px;
+  }
+
+  .card {
+    /* 86vw leaves the next piece peeking in — the affordance that tells the
+       visitor there is more without needing a caption to say so. */
+    flex: 0 0 86vw;
+    height: 68vh;
+    scroll-snap-align: center;
   }
 
   .cardTall {
-    grid-row: span 1;
+    grid-row: auto;
   }
 
   .cardInfo {
     padding: 1.25rem 1.25rem 1.75rem;
+  }
+}
+
+/* Snapping is motion; let the band rest wherever it is left. */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .grid {
+    scroll-snap-type: none;
   }
 }
 
@@ -343,6 +375,26 @@
 
 /* Touch devices with no timeline support: show the resolved state, not the
    pre-animation one, so nothing is stuck mid-effect. */
+/*
+ * On a phone the cards live in a horizontal scroller, so their progress is
+ * measured along the inline axis, not the block one. Without this the reveals
+ * would be waiting on a vertical scroll that never happens inside the band.
+ * Declared after the touch block so it wins.
+ */
+@media (max-width: 768px) {
+  .card {
+    view-timeline-axis: inline;
+  }
+
+  .image,
+  .cardLine,
+  .cardTitle {
+    /* Tighter window: a swiped card crosses the viewport far faster than a
+       scrolled one, so the reveal has to resolve sooner. */
+    animation-range: entry 15% cover 35%;
+  }
+}
+
 @supports not (animation-timeline: view()) {
   @media (hover: none) {
     .cardLine {
