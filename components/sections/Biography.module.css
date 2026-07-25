@@ -1,10 +1,11 @@
 .section {
   background-color: var(--bg-light);
-  padding: clamp(4rem, 10vh, 8rem) clamp(1.25rem, 6vw, 6rem);
+  padding-block: var(--sect-md);
+  padding-inline: var(--sect-inline);
 }
 
 .inner {
-  max-width: 1200px;
+  max-width: var(--content-max);
   margin-inline: auto;
   display: grid;
   grid-template-columns: 0.45fr 0.55fr;
@@ -12,10 +13,17 @@
   align-items: start;
 }
 
-/* -- Image column -- */
+/*
+ * -- Image column --
+ * aspect-ratio instead of min-height: 520px. At ~800px viewport the portrait
+ * rendered ~310x520 next to a ~700px text column with align-items:start, which
+ * left roughly 180px of dead space beneath it. Sticky keeps the portrait
+ * present while the three paragraphs are read.
+ */
 .imageCol {
-  position: relative;
-  min-height: 520px;
+  position: sticky;
+  top: calc(var(--nav-offset) + 1.5rem);
+  aspect-ratio: 3 / 4;
   overflow: hidden;
 }
 
@@ -58,15 +66,23 @@
   color: var(--text-muted);
 }
 
-@media (max-width: 768px) {
+/* Collapse at 900, not 768: below that the 0.45fr column is too narrow. */
+@media (max-width: 900px) {
   .inner {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
 
   .imageCol {
-    min-height: auto;
-    aspect-ratio: 3 / 4;
+    position: relative;
+    top: auto;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (max-width: 768px) {
+  .imageCol {
+    aspect-ratio: 4 / 5;
     max-height: 420px;
   }
 

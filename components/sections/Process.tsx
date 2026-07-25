@@ -3,14 +3,12 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { PROCESS_STEPS } from "@/lib/constants";
+import { useMotionVariants } from "@/lib/motion";
 import styles from "./Process.module.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function Process() {
+  const v = useMotionVariants();
+
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
@@ -21,16 +19,10 @@ export default function Process() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ staggerChildren: 0.15 }}
         >
-          <motion.span
-            className={styles.eyebrow}
-            variants={fadeUp}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            Metodología
-          </motion.span>
+          {/* Eyebrow dropped: the heading names the section already. */}
           <motion.h2
             className={styles.title}
-            variants={fadeUp}
+            variants={v.stratum}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             Mi proceso de trabajo
@@ -44,13 +36,27 @@ export default function Process() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ staggerChildren: 0.1 }}
         >
-          {PROCESS_STEPS.map((step) => (
+          {PROCESS_STEPS.map((step, index) => (
             <motion.article
               key={step.id}
               className={styles.card}
-              variants={fadeUp}
+              variants={v.stratum}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
+              {/* Stratigraphic marker: each step sits one layer deeper into the
+                  piece, the way a cross-section reads from varnish to support.
+                  Depth is expressed by the bar's height, so the sequence is
+                  legible without numbering every section of the site. */}
+              <span
+                className={styles.stratum}
+                aria-hidden="true"
+                style={
+                  {
+                    "--depth": `${25 + index * 25}%`,
+                  } as React.CSSProperties
+                }
+              />
+
               <div className={styles.imageWrapper}>
                 {/* TODO: Replace with real process photography per step */}
                 <Image

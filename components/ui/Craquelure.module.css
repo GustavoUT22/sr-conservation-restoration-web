@@ -1,0 +1,34 @@
+/*
+ * Craquelure.module.css
+ *
+ * Decorative crack network. Sits behind content, never above it.
+ *
+ * Variables consumed from globals.css:
+ *   --text-main → stroke colour on light grounds
+ */
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Behind the section's own content, which sets z-index: 1. */
+  z-index: 0;
+}
+
+.crack {
+  stroke: var(--text-main);
+  stroke-width: 1;
+  /* Real cracks taper; round joins keep the branches from looking like a
+     technical diagram. */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  fill: none;
+}
+
+/* Variant for dark grounds. */
+.onDark .crack {
+  stroke: var(--accent-sand);
+}

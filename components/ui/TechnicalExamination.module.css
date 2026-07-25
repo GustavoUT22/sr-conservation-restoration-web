@@ -1,0 +1,194 @@
+/*
+ * TechnicalExamination.module.css
+ *
+ * Three lighting states over one photograph, built entirely from filters and
+ * blended layers — no second asset, no WebGL.
+ *
+ * Variables consumed from globals.css:
+ *   --surface, --bg-dark      → frame ground
+ *   --text-inv, --text-muted-inv → controls and caption
+ *   --accent-sand             → active control
+ *   --sans, --text-label      → control typography
+ */
+
+.wrapper {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background-color: var(--surface);
+  isolation: isolate;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+  transition: filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Visible light: the plain reading ── */
+.visible .image {
+  filter: none;
+}
+
+/*
+ * Raking light: crushed midtones and lifted contrast so surface relief reads.
+ * Slight desaturation because a conservator judges form here, not colour.
+ */
+.raking .image {
+  filter: contrast(1.5) brightness(0.82) saturate(0.55) grayscale(0.25);
+}
+
+/*
+ * UV fluorescence: deep violet ground where varnish layers glow and later
+ * retouching stays dark. hue-rotate lands the blues, saturate pushes the glow,
+ * and the brightness drop mimics a darkened examination room.
+ */
+.uv .image {
+  filter: hue-rotate(215deg) saturate(2.4) brightness(0.45) contrast(1.7);
+}
+
+/* The violet cast that sells the fluorescence. */
+.uvCast {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 90% at 50% 40%,
+      rgba(96, 62, 176, 0.42) 0%,
+      rgba(38, 22, 78, 0.62) 55%,
+      rgba(14, 8, 32, 0.78) 100%
+    );
+  mix-blend-mode: color;
+  opacity: 0;
+}
+
+/* The travelling beam for raking light. */
+.rakeBeam {
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+  width: 30%;
+  z-index: 2;
+  pointer-events: none;
+  rotate: 10deg;
+  background: linear-gradient(
+    to right,
+    rgba(255, 250, 240, 0) 0%,
+    rgba(255, 250, 240, 0.06) 40%,
+    rgba(255, 252, 245, 0.16) 52%,
+    rgba(255, 250, 240, 0.06) 64%,
+    rgba(255, 250, 240, 0) 100%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* ── Controls ── */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-top: 1px solid var(--border-inv);
+}
+
+.control {
+  flex: 1;
+  min-width: 8rem;
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--text-muted-inv);
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0.9rem 0.75rem;
+  cursor: pointer;
+  transition: color 0.25s ease, background-color 0.25s ease;
+}
+
+.control + .control {
+  border-left: 1px solid var(--border-inv);
+}
+
+.control:hover {
+  color: var(--text-inv);
+}
+
+.controlActive {
+  color: var(--bg-dark);
+  background-color: var(--accent-sand);
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--accent-sand);
+  outline-offset: -3px;
+}
+
+/* ── Caption ── */
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.reading {
+  font-family: var(--sans);
+  font-size: var(--text-meta);
+  line-height: var(--leading-body);
+  color: var(--text-muted-inv);
+  max-width: var(--measure-intro);
+  /* Reserve height so switching modes doesn't shift the layout. */
+  min-height: 2.6em;
+}
+
+/*
+ * Not fine print by accident: stating that this is a simulation is what keeps
+ * the effect from reading as a false claim about a real examination.
+ */
+.disclaimer {
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted-inv);
+  opacity: 0.65;
+}
+
+@media (max-width: 768px) {
+  .frame {
+    aspect-ratio: 4 / 5;
+  }
+
+  .control {
+    min-width: 100%;
+  }
+
+  .control + .control {
+    border-left: none;
+    border-top: 1px solid var(--border-inv);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    transition: filter 0.2s linear;
+  }
+
+  .rakeBeam {
+    display: none;
+  }
+}

@@ -2,14 +2,12 @@
 
 import { motion } from "motion/react";
 import { CREDENTIALS } from "@/lib/constants";
+import { useMotionVariants } from "@/lib/motion";
 import styles from "./Credentials.module.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function Credentials() {
+  const v = useMotionVariants();
+
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
@@ -20,16 +18,10 @@ export default function Credentials() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ staggerChildren: 0.15 }}
         >
-          <motion.span
-            className={styles.eyebrow}
-            variants={fadeUp}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            Formación
-          </motion.span>
+          {/* Eyebrow dropped: the heading names the section already. */}
           <motion.h2
             className={styles.title}
-            variants={fadeUp}
+            variants={v.stratum}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             Educación y credenciales
@@ -47,7 +39,7 @@ export default function Credentials() {
             <motion.div
               key={group.type}
               className={styles.group}
-              variants={fadeUp}
+              variants={v.stratum}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
               <h3 className={styles.groupTitle}>{group.type}</h3>

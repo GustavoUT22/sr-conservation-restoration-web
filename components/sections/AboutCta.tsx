@@ -3,14 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { useMotionVariants } from "@/lib/motion";
 import styles from "./AboutCta.module.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function AboutCta() {
+  const v = useMotionVariants();
+
   return (
     <section className={styles.section}>
       <div className={styles.imageWrapper}>
@@ -35,7 +33,7 @@ export default function AboutCta() {
       >
         <motion.div
           className={styles.eyebrow}
-          variants={fadeUp}
+          variants={v.settle}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <span className={styles.eyebrowLine} aria-hidden="true" />
@@ -44,7 +42,7 @@ export default function AboutCta() {
 
         <motion.h2
           className={styles.heading}
-          variants={fadeUp}
+          variants={v.settle}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           ¿Tienes una pieza que necesita conservación?
@@ -52,7 +50,7 @@ export default function AboutCta() {
 
         <motion.p
           className={styles.body}
-          variants={fadeUp}
+          variants={v.settle}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           Cada obra cuenta una historia. Si tienes una pieza que necesita
@@ -60,7 +58,7 @@ export default function AboutCta() {
         </motion.p>
 
         <motion.div
-          variants={fadeUp}
+          variants={v.settle}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <Link href="/contacto" className={styles.cta}>

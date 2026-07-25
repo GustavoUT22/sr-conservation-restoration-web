@@ -3,16 +3,15 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { WORKS } from "@/lib/constants";
+import { useMotionVariants } from "@/lib/motion";
 import styles from "./Works.module.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function Works() {
+  const v = useMotionVariants();
+
+  // id in Spanish to match NAV_LINKS and the hero CTA target.
   return (
-    <section className={styles.section} id="works">
+    <section className={styles.section} id="obra">
       <motion.div
         className={styles.header}
         initial="hidden"
@@ -20,18 +19,11 @@ export default function Works() {
         viewport={{ once: true, margin: "-80px" }}
         transition={{ staggerChildren: 0.15 }}
       >
-        <motion.div
-          className={styles.eyebrow}
-          variants={fadeUp}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <span className={styles.eyebrowLine} />
-          <span className={styles.eyebrowText}>Trabajos seleccionados</span>
-        </motion.div>
-
+        {/* Eyebrow removed: "Trabajos seleccionados" only restated the heading
+            below it. It sat on 12 of 13 sections, which reads as scaffolding. */}
         <motion.h2
           className={styles.title}
-          variants={fadeUp}
+          variants={v.stratum}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           Obras intervenidas y
@@ -41,7 +33,7 @@ export default function Works() {
 
         <motion.p
           className={styles.description}
-          variants={fadeUp}
+          variants={v.stratum}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           Cada intervención es un testimonio del cuidado meticuloso aplicado a
@@ -59,14 +51,17 @@ export default function Works() {
         {WORKS.map((work) => (
           <motion.article
             key={work.id}
-            className={`${styles.card} ${styles[`card--${work.size}`]}`}
-            variants={fadeUp}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            /* `card--${work.size}` matched no rule and rendered class="undefined";
+               the mosaic silently relied on nth-child instead. */
+            className={`${styles.card} ${work.size === "tall" ? styles.cardTall : ""}`}
+            /* chromatic, not a generic fade: the piece arrives desaturated and
+               recovers its colour — the visual signature of reintegration. */
+            variants={v.chromatic}
           >
             <div className={styles.imageWrapper}>
               <Image
                 src={work.image}
-                alt={work.title}
+                alt={`${work.title} — ${work.category}, ${work.year}`}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className={styles.image}
@@ -77,14 +72,13 @@ export default function Works() {
 
             <div className={styles.cardInfo}>
               <div className={styles.cardMeta}>
-                <span>{work.category}</span>
+                <span className={styles.cardMetaItem}>{work.category}</span>
                 <span className={styles.cardDash} />
-                <span>{work.year}</span>
+                <span className={styles.cardMetaItem}>{work.year}</span>
               </div>
 
               <h3 className={styles.cardTitle}>{work.title}</h3>
-
-              <div className={styles.cardLine} />
+              <div className={styles.cardLine} aria-hidden="true" />
             </div>
           </motion.article>
         ))}

@@ -1,0 +1,126 @@
+/*
+ * DamageMap.module.css
+ *
+ * Condition-survey overlay. Reads as a technical document, so: hairline
+ * strokes, no fills heavy enough to hide the piece, and a legend that behaves
+ * like a key rather than like UI chrome.
+ *
+ * Variables consumed from globals.css:
+ *   --surface        → frame ground
+ *   --text-muted-inv → legend and caption
+ *   --sans           → DM Sans
+ */
+
+.wrapper {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--surface);
+  isolation: isolate;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+  /* Slightly held back so the survey lines stay legible over it. */
+  filter: brightness(0.82) saturate(0.85);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.region {
+  fill: none;
+  stroke-width: 0.45;
+  /* Keeps stroke weight constant despite preserveAspectRatio="none". */
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+}
+
+.anchor {
+  fill: currentColor;
+}
+
+/*
+ * Colour coding follows the convention of condition reports: warm tones for
+ * material loss, cool for structural issues. Each clears 3:1 against the
+ * darkened photograph.
+ */
+.laguna {
+  stroke: #e0725a;
+  color: #e0725a;
+}
+
+.craquelado {
+  stroke: #d6c8b5;
+  color: #d6c8b5;
+}
+
+.repinte {
+  stroke: #8fb8d8;
+  color: #8fb8d8;
+}
+
+.levantamiento {
+  stroke: #e5c25c;
+  color: #e5c25c;
+}
+
+/* ── Legend ── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--text-muted-inv);
+}
+
+.swatch {
+  width: 0.85rem;
+  height: 2px;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.caption {
+  font-family: var(--sans);
+  font-size: var(--text-meta);
+  line-height: var(--leading-body);
+  color: var(--text-muted-inv);
+  max-width: var(--measure-intro);
+  opacity: 0.75;
+}
+
+@media (max-width: 768px) {
+  .frame {
+    aspect-ratio: 1 / 1;
+  }
+
+  .legend {
+    gap: 0.75rem 1rem;
+  }
+}

@@ -36,7 +36,7 @@
   font-family: var(--sans);
   font-size: 1rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--track-caps);
   color: var(--text-inv);
   text-transform: uppercase;
   transition: opacity 0.2s ease;
@@ -62,16 +62,16 @@
 
 .navLink {
   font-family: var(--sans);
-  font-size: 0.6875rem;
+  font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
   color: var(--text-inv);
   transition: color 0.2s ease;
 }
 
 .navLink:hover {
-  color: var(--text-muted);
+  color: var(--text-muted-inv);
 }
 
 /* ── Botón hamburguesa ── */
@@ -159,7 +159,7 @@
 .drawerLink {
   display: block;
   font-family: var(--sans);
-  font-size: 0.75rem;
+  font-size: var(--text-meta);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -170,7 +170,7 @@
 }
 
 .drawerLink:hover {
-  color: var(--text-muted);
+  color: var(--text-muted-inv);
   padding-left: 0.5rem;
 }
 

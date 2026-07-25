@@ -14,11 +14,19 @@
 /* ── Section ── */
 .section {
   background-color: var(--bg-dark);
-  padding: 6rem 2.5rem 5rem;
+  padding-block: var(--sect-md);
+  padding-inline: var(--sect-inline);
 }
 
-/* ── Header ── */
+/*
+ * ── Header ──
+ * Capped and centred like every other section. Without this the home page ran
+ * content to ~1840px on a wide display while the interior routes stopped at
+ * 1200px, so the column width jumped on every navigation.
+ */
 .header {
+  max-width: var(--content-max);
+  margin-inline: auto;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -34,11 +42,11 @@
 
 .eyebrow {
   font-family: var(--sans);
-  font-size: 0.5625rem;
+  font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-muted-inv);
 }
 
 .title {
@@ -54,14 +62,16 @@
   font-family: var(--sans);
   font-size: 0.9375rem;
   line-height: 1.65;
-  color: var(--text-muted);
-  max-width: 26ch;
+  color: var(--text-muted-inv);
+  max-width: var(--measure-intro);
   text-align: right;
   padding-bottom: 0.25rem;
 }
 
 /* ── Grid: 3 equal columns ── */
 .grid {
+  max-width: var(--content-max);
+  margin-inline: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
@@ -77,7 +87,9 @@
 .card {
   display: flex;
   flex-direction: column;
-  cursor: pointer;
+  /* No cursor: pointer — these articles are not links and have no click
+     handler. Signalling interactivity that does not exist is a false
+     affordance, and the hover-only reveals were unreachable by keyboard. */
 }
 
 /* ── Image ── */
@@ -124,9 +136,9 @@
 .metaDot,
 .metaCategory {
   font-family: var(--sans);
-  font-size: 0.5625rem;
+  font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
   color: var(--accent-sand);
   opacity: 0.85;
@@ -155,7 +167,7 @@
   font-family: var(--sans);
   font-size: 0.875rem;
   line-height: 1.65;
-  color: var(--text-muted);
+  color: var(--text-muted-inv);
   margin-top: 0.25rem;
 }
 
@@ -170,11 +182,11 @@
 
 .ctaLink {
   font-family: var(--sans);
-  font-size: 0.6875rem;
+  font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-muted-inv);
   transition: color 0.2s ease;
 }
 
@@ -194,12 +206,68 @@
     text-align: left;
     max-width: 40ch;
   }
+
+  /*
+   * The 3-column grid survived down to 768px, leaving ~230px cards between
+   * 769 and 1024 — titles broke over two cramped lines and descriptions ran at
+   * 22 characters. Two columns from here.
+   */
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card + .card {
+    border-left: none;
+  }
+
+  .card:nth-child(even) {
+    border-left: 1px solid var(--border-inv);
+  }
+
+  .card:nth-child(n + 3) {
+    border-top: 1px solid var(--border-inv);
+  }
+}
+
+/*
+ * ── Touch: scroll replaces hover ──
+ * The card's only reveal (image lifting out of greyscale) is bound to :hover
+ * and never fired on a phone. Bound to viewport entry instead.
+ */
+@media (hover: none) {
+  .card {
+    view-timeline-name: --specialty;
+    view-timeline-axis: block;
+  }
+
+  .image {
+    animation: liftGrey linear both;
+    animation-timeline: --specialty;
+    animation-range: entry 25% cover 45%;
+  }
+
+  @keyframes liftGrey {
+    from {
+      filter: grayscale(18%);
+      transform: scale(1.04);
+    }
+    to {
+      filter: grayscale(0%);
+      transform: scale(1);
+    }
+  }
 }
 
 /* ── Responsive: mobile ── */
 @media (max-width: 768px) {
   .section {
     padding: 4rem 1.25rem 4rem;
+  }
+
+  /* Taller crop: a 16/9 sliver of a restored piece says very little on a
+     phone, where the image is the whole argument. */
+  .imageWrapper {
+    aspect-ratio: 5 / 4;
   }
 
   .grid {
@@ -213,10 +281,6 @@
 
   .card + .card {
     border-left: none;
-  }
-
-  .imageWrapper {
-    aspect-ratio: 16 / 9;
   }
 
   .info {

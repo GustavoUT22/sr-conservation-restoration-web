@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FaLinkedinIn, FaInstagram, FaTiktok } from "react-icons/fa";
 import type { IconType } from "react-icons";
-import { NAV_LINKS, SOCIAL_LINKS } from "@/lib/constants";
+import { CONTACT_EMAIL, NAV_LINKS, SOCIAL_LINKS } from "@/lib/constants";
 import type { SocialPlatform } from "@/lib/types";
 import styles from "./Footer.module.css";
 
@@ -36,7 +36,9 @@ export default function Footer() {
                   aria-label={label}
                   className={styles.socialLink}
                 >
-                  <Icon size={14} />
+                  {/* The link already carries aria-label; without this some
+                      screen readers announce the platform twice. */}
+                  <Icon size={14} aria-hidden focusable="false" />
                 </a>
               );
             })}
@@ -61,14 +63,15 @@ export default function Footer() {
           <div className={styles.contactBlock}>
             <span className={styles.contactMeta}>Email</span>
             <a
-              href="mailto:contacto@restauracion.pe"
+              href={`mailto:${CONTACT_EMAIL}`}
               className={styles.contactValue}
             >
-              contacto@restauracion.pe
+              {CONTACT_EMAIL}
             </a>
           </div>
           <div className={styles.contactBlock}>
             <span className={styles.contactMeta}>Teléfono</span>
+            {/* TODO: Replace with real phone number */}
             <a href="tel:+51987654321" className={styles.contactValue}>
               +51 987 654 321
             </a>

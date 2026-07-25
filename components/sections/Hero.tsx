@@ -4,14 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { HOME_STATS, MARQUEE_WORDS } from "@/lib/constants";
+import { useMotionVariants } from "@/lib/motion";
+import RakingLight from "@/components/ui/RakingLight";
 import styles from "./Hero.module.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function Hero() {
+  const v = useMotionVariants();
+
   return (
     <section className={styles.hero}>
       <div className={styles.bgImage}>
@@ -27,6 +26,10 @@ export default function Hero() {
 
       <div className={styles.gradient} aria-hidden="true" />
 
+      {/* Sweeps once after the title settles, revealing the texture of the
+          scene the way raking light reveals a painted surface. */}
+      <RakingLight delay={1.4} />
+
       <motion.div
         className={styles.content}
         initial="hidden"
@@ -35,7 +38,7 @@ export default function Hero() {
       >
         <motion.div
           className={styles.eyebrow}
-          variants={fadeUp}
+          variants={v.emerge}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <span className={styles.eyebrowLine} aria-hidden="true" />
@@ -46,7 +49,7 @@ export default function Hero() {
 
         <motion.h1
           className={styles.heading}
-          variants={fadeUp}
+          variants={v.emerge}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <span className={styles.headingFirst}>Solange</span>
@@ -55,7 +58,7 @@ export default function Hero() {
 
         <motion.p
           className={styles.tagline}
-          variants={fadeUp}
+          variants={v.emerge}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           Devuelvo la vida a las obras que el tiempo ha tocado.
@@ -63,13 +66,14 @@ export default function Hero() {
 
         <motion.div
           className={styles.ctas}
-          variants={fadeUp}
+          variants={v.emerge}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <Link href="#obra" className={styles.ctaPrimary}>
             Ver mi obra
           </Link>
-          <Link href="#contacto" className={styles.ctaSecondary}>
+          {/* Contact is a route, not a home section — an anchor here went nowhere. */}
+          <Link href="/contacto" className={styles.ctaSecondary}>
             Contacto
           </Link>
         </motion.div>
@@ -85,7 +89,7 @@ export default function Hero() {
           <motion.div
             key={label}
             className={styles.stat}
-            variants={fadeUp}
+            variants={v.emerge}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <span className={styles.statValue}>{value}</span>

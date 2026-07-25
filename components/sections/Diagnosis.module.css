@@ -1,0 +1,66 @@
+/*
+ * Diagnosis.module.css
+ *
+ * Dark ground on purpose: it breaks the light/dark cadence of /servicios, which
+ * ran light all the way through the middle, and it lets the survey lines of the
+ * damage map read against the photograph.
+ *
+ * Variables consumed from globals.css:
+ *   --bg-dark        → section ground
+ *   --text-inv       → heading
+ *   --text-muted-inv → body copy
+ *   --sect-md        → vertical rhythm
+ *   --content-max    → shared width cap
+ */
+
+.section {
+  background-color: var(--bg-dark);
+  padding-block: var(--sect-md);
+  padding-inline: var(--sect-inline);
+}
+
+.inner {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+  align-items: center;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: var(--text-h2);
+  font-weight: 400;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--track-tight);
+  color: var(--text-inv);
+  text-wrap: balance;
+}
+
+.body {
+  font-family: var(--sans);
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: var(--leading-body);
+  color: var(--text-muted-inv);
+  max-width: var(--measure-body);
+  text-wrap: pretty;
+}
+
+.mapCol {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}

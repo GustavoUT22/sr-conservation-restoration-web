@@ -105,9 +105,16 @@
   --bg-light:       var(--tertiary-200);   /* #F5F1EA — secciones claras invertidas */
 
   /* Texto */
-  --text-main:      var(--neutral-800);    /* #3A3632 — texto sobre fondo claro */
-  --text-inv:       var(--neutral-100);    /* #F0EAE0 — texto sobre fondo oscuro */
-  --text-muted:     var(--neutral-500);    /* #7C7468 — texto secundario / placeholders */
+  --text-main:      var(--neutral-800);    /* #3A3632 — texto sobre fondo claro · 10.6:1 */
+  --text-inv:       var(--neutral-100);    /* #F0EAE0 — texto sobre fondo oscuro · 15.2:1 */
+
+  /*
+   * Muted text is split by ground. The old single token (--neutral-500 #7C7468)
+   * measured 4.09:1 on --bg-light and 3.94:1 on --bg-dark — below the 4.5:1 AA
+   * floor on BOTH, while carrying nearly all body copy on the site.
+   */
+  --text-muted:     var(--neutral-600);    /* #645C52 — sobre claro · 5.84:1 */
+  --text-muted-inv: var(--neutral-400);    /* #A89C8E — sobre oscuro · 6.75:1 */
   --text-link:      rgba(232, 220, 200, 0.7); /* #E8D9CB con opacidad para links sobre oscuro */
   /* Acento decorativo */
   --accent-sand:    var(--secondary-300);  /* #D6C8B5 — tono suave para detalles */
@@ -119,12 +126,62 @@
   --serif:          'Playfair Display', serif; /* títulos editoriales */
   --sans:           'DM Sans', sans-serif;     /* cuerpo y UI */
 
+  /*
+   * Type scale. The site had 18 distinct small sizes covering ~6 roles, which
+   * is a continuum, not a scale. These are the only sizes components may use.
+   */
+  --text-label:   0.6875rem;                          /* eyebrows, CTAs, caps */
+  --text-meta:    0.8125rem;                          /* footer, meta de cards */
+  --text-body:    clamp(0.9375rem, 1.2vw, 1.0625rem);
+  --text-h3:      clamp(1.25rem, 2vw, 1.75rem);
+  --text-h2-sub:  clamp(1.75rem, 3vw, 2.375rem);
+  --text-h2:      clamp(2.25rem, 5vw, 4.25rem);
+  --text-h1:      clamp(2.75rem, 6vw, 5.5rem);
+  --text-display: clamp(4rem, 9vw, 7.5rem);           /* solo el hero del home */
+
+  /* Tracking · floor for display is -0.04em, never tighter */
+  --track-caps:   0.16em;
+  --track-tight:  -0.01em;
+
+  /* Line height — four values replace the sixteen in use */
+  --leading-display: 0.95;
+  --leading-heading: 1.15;
+  --leading-ui:      1.5;
+  --leading-body:    1.7;
+
+  /* Measure — body copy never reached the 65ch target before */
+  --measure-body:    65ch;
+  --measure-intro:   55ch;
+  --measure-tagline: 36ch;
+
+  /*
+   * Section density. Eight sections shared one identical padding value, which
+   * is why the page breathed uniformly instead of rhythmically. Assign these
+   * deliberately: xl for moments, md for narrative, sm for dense data.
+   */
+  --sect-xl: clamp(6rem, 14vh, 11rem);
+  --sect-md: clamp(4rem, 10vh, 8rem);
+  --sect-sm: clamp(2.5rem, 5vh, 4rem);
+  --sect-inline: clamp(1.25rem, 6vw, 6rem);
+
+  /* Fixed navbar offset — was hardcoded differently in Hero and ContactHero */
+  --nav-offset: 6rem;
+
+  /* Semantic z-index scale — no more arbitrary 9999 */
+  --z-base:    1;
+  --z-sticky:  100;
+  --z-nav:     200;
+  --z-overlay: 300;
+  --z-intro:   400;
+
   /* Superficies (capas de elevación) */
   --surface:        var(--primary-800);    /* #251E1A — cards, paneles */
   --surface-raised: var(--primary-700);    /* #3A3130 — dropdowns, tooltips, modals */
 
   /* Acentos */
-  --accent:         var(--secondary-600);  /* #8B7B67 — acento principal */
+  /* secondary-600 (#8B7B67) only reached 3.64:1 on --bg-light; 700 keeps the
+     gold character at 5.42:1. */
+  --accent:         var(--secondary-700);  /* #705F4F — acento principal */
   --accent-muted:   var(--secondary-300);  /* #D6C8B5 — acento suave */
   --accent-dim:     var(--secondary-900);  /* #3D342E — acento sobre oscuro */
 
@@ -158,8 +215,11 @@
   --muted:                var(--primary-800);    /* #251E1A */
   --muted-foreground:     var(--neutral-500);    /* #7C7468 */
 
-  /* Acento de componentes → versión oscura del gold */
-  --accent:               var(--secondary-900);  /* #3D342E */
+  /* Acento de componentes → versión oscura del gold.
+     RENAMED from --accent: it was redeclaring the semantic token above in the
+     same :root, so every var(--accent) in the app silently resolved to this
+     dark brown instead of the intended gold. */
+  --accent-ui:            var(--secondary-900);  /* #3D342E */
   --accent-foreground:    var(--secondary-300);  /* #D6C8B5 */
 
   /* Estados de error / destructivos — valor fijo, no parte del ramp */
@@ -254,15 +314,94 @@ ol {
   list-style: none;
 }
 
-.container {
-  width: 100%;
-  max-width: 1440px;
-  margin-inline: auto;
-    padding-inline: 1.25rem;
+/*
+ * Skip link. Off-screen until focused, so keyboard users can jump the navbar
+ * instead of tabbing through it on every page.
+ */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--z-intro);
+  transform: translateY(-120%);
+  padding: 0.85rem 1.25rem;
+  background-color: var(--bg-dark);
+  color: var(--text-inv);
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  border: 1px solid var(--accent-sand);
+  transition: transform 0.18s ease;
 }
 
-@media (min-width: 768px) {
-  .container {
-      padding-inline: 2.5rem;
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/*
+ * Global focus fallback. Most interactive elements defined no focus style at
+ * all and fell back to the UA ring, which is nearly invisible on #1C1410.
+ * --accent-sand gives 11.05:1 on dark and clears 1.4.11 on light.
+ */
+:focus-visible {
+  outline: 2px solid var(--accent-sand);
+  outline-offset: 3px;
+}
+
+/*
+ * Touch targets. Several links are 11px uppercase text, which gives a tap area
+ * far under the 44px minimum — easy to miss and easy to hit by accident.
+ * The padding is applied on coarse pointers only so the desktop layout, where
+ * these sit on tight hairline rules, is untouched.
+ */
+@media (pointer: coarse) {
+  a,
+  button,
+  [role="button"],
+  input[type="submit"] {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
+
+  /* Links inside running prose keep the text flow; only standalone controls
+     need the enlarged target. */
+  p a,
+  li a {
+    min-height: 0;
+    display: inline;
+  }
+}
+
+/*
+ * Reduced motion. The site had zero support for this while running a 28s
+ * infinite marquee, a 2.8s blocking splash and scroll reveals on ~17 sections.
+ * Motion-heavy art direction makes this mandatory, not optional.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * `.container` was defined here and used by literally nothing, while sections
+ * each declared their own max-width — which is how the home page ended up
+ * running content to ~1840px while every other route capped at 1200px.
+ * Sections now use --measure-* and their own .inner; this stays only as the
+ * shared cap so those stay in agreement.
+ */
+:root {
+  --content-max: 1200px;
 }
