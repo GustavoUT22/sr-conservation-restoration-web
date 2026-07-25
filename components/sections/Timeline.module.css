@@ -1,39 +1,28 @@
 /*
  * Timeline.module.css
  *
- * Horizontal band on a dark ground. The hairline running through the nodes is
- * the time axis; milestones snap to it as you scroll sideways. It was a
- * vertical list on a page that is already entirely vertical.
+ * Vertical axis with the years in their own column. One alignment at every
+ * width — the previous horizontal band ran full-bleed while the heading was
+ * capped at --content-max, so the two never lined up, and a sideways scroll is
+ * undiscoverable with a mouse.
  *
  * Variables consumed from globals.css:
  *   --bg-dark, --border-inv      → ground and axis
  *   --text-inv, --text-muted-inv → titles and body
  *   --accent-sand                → years and nodes
  *   --sect-sm / --sect-inline    → rhythm (dense data, deliberately compressed)
+ *   --content-max                → shared width cap
  */
 
 .section {
   background-color: var(--bg-dark);
   padding-block: var(--sect-sm);
-  /* No inline padding: the band bleeds off the right edge, which is what tells
-     the reader there is more to scroll. */
-  padding-inline: 0;
-  overflow: hidden;
+  padding-inline: var(--sect-inline);
 }
 
 .inner {
   max-width: var(--content-max);
   margin-inline: auto;
-  padding-inline: var(--sect-inline);
-}
-
-.header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 .title {
@@ -44,90 +33,76 @@
   letter-spacing: var(--track-tight);
   color: var(--text-inv);
   text-wrap: balance;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-.hint {
-  font-family: var(--sans);
-  font-size: var(--text-label);
-  font-weight: 500;
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  color: var(--text-muted-inv);
-}
-
-/* ── Band ── */
 .track {
   display: flex;
-  gap: 0;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-inline: var(--sect-inline);
-  padding-block: 1rem;
-  /* Thin, unobtrusive scrollbar; the band itself is the affordance. */
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent-sand) transparent;
-}
-
-.track:focus-visible {
-  outline: 2px solid var(--accent-sand);
-  outline-offset: -4px;
-}
-
-.milestone {
-  position: relative;
-  flex: 0 0 clamp(15rem, 26vw, 20rem);
-  scroll-snap-align: start;
-  padding-right: clamp(1.5rem, 3vw, 2.5rem);
-  padding-top: 3.25rem;
+  flex-direction: column;
 }
 
 /*
- * The time axis. Drawn per milestone rather than as one element so it extends
- * exactly as far as the content does, with no measuring in JS.
+ * Two columns: the year against the axis, the entry beside it. The year column
+ * is what keeps this from reading as one more stacked list.
  */
-.milestone::before {
-  content: '';
-  position: absolute;
-  top: 2.55rem;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background-color: var(--border-inv);
+.milestone {
+  display: grid;
+  grid-template-columns: clamp(5rem, 10vw, 8rem) 1fr;
+  column-gap: clamp(1.5rem, 3vw, 2.75rem);
+  padding-bottom: clamp(2.25rem, 4vw, 3.5rem);
 }
 
-.milestone:last-child::before {
-  /* Stops the axis at the final node instead of trailing into empty space. */
-  right: auto;
-  width: 0.5rem;
+.milestone:last-child {
+  padding-bottom: 0;
 }
 
 .year {
   font-family: var(--serif);
-  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  font-size: clamp(1.5rem, 2.4vw, 2.125rem);
   font-weight: 400;
   line-height: 1;
   color: var(--accent-sand);
-  display: block;
-  margin-bottom: 0.85rem;
+  text-align: right;
+  /* Optically aligns the year with the first line of the title beside it. */
+  padding-top: 0.1em;
+}
+
+/*
+ * The axis lives on the content column, so it runs the exact height of each
+ * entry and needs no measuring and no extra element.
+ */
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: clamp(1.25rem, 2.5vw, 2rem);
+  border-left: 1px solid var(--border-inv);
+  padding-bottom: 0.25rem;
+}
+
+/* The rule would otherwise hang below the final entry with nothing under it. */
+.milestone:last-child .content {
+  border-left-color: transparent;
+  background: linear-gradient(
+      to bottom,
+      var(--border-inv) 0,
+      var(--border-inv) 1.5rem,
+      transparent 1.5rem
+    )
+    left / 1px 100% no-repeat;
 }
 
 .node {
   position: absolute;
-  top: 2.55rem;
+  top: 0.45rem;
   left: 0;
   width: 7px;
   height: 7px;
-  margin-top: -3px;
+  margin-left: -3.5px;
   background-color: var(--accent-sand);
   /* Square, per the zero-radius rule — and it reads as a survey tick. */
   border-radius: 0;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-top: 1.25rem;
 }
 
 .itemTitle {
@@ -141,100 +116,34 @@
 
 .itemDesc {
   font-family: var(--sans);
-  font-size: var(--text-meta);
+  font-size: var(--text-body);
   line-height: var(--leading-body);
   color: var(--text-muted-inv);
+  max-width: var(--measure-body);
   text-wrap: pretty;
 }
 
 /*
- * ── Narrow screens: back to a vertical axis ──
- *
- * The horizontal band needs width to work. On a phone each milestone was
- * squeezed to 78vw, the axis ran through uneven card heights, and a sideways
- * scroll fought the vertical one. A timeline still wants an axis — so here it
- * runs down the left edge instead of across, which is what vertical space
- * affords.
+ * Narrow: the year moves above its entry rather than squeezing a column that
+ * cannot hold four digits comfortably.
  */
-@media (max-width: 900px) {
-  .section {
-    padding-inline: var(--sect-inline);
-  }
-
-  .inner {
-    padding-inline: 0;
-  }
-
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-
-  /* No sideways gesture, so the prompt would be a lie. */
-  .hint {
-    display: none;
-  }
-
-  .track {
-    display: block;
-    overflow-x: visible;
-    scroll-snap-type: none;
-    padding-inline: 0;
-    padding-block: 0;
-  }
-
+@media (max-width: 640px) {
   .milestone {
-    /* Room on the left for the axis and its node. Resets the desktop
-       flex-basis too: inside a block container it would otherwise linger. */
-    flex: none;
-    padding: 0 0 2.5rem 1.75rem;
+    grid-template-columns: 1fr;
+    row-gap: 0.4rem;
   }
 
-  .milestone:last-child {
-    padding-bottom: 0;
+  .year {
+    text-align: left;
+    padding-left: clamp(1.25rem, 2.5vw, 2rem);
+    font-size: 1.375rem;
   }
 
-  /* The axis becomes a continuous vertical rule. */
-  .milestone::before {
-    top: 0.55rem;
-    bottom: 0;
-    left: 3px;
-    right: auto;
-    width: 1px;
-    height: auto;
-  }
-
-  /* Stops the rule at the final node rather than trailing past it. */
-  .milestone:last-child::before {
-    bottom: auto;
-    height: 0.5rem;
-    width: 1px;
+  .content {
+    padding-top: 0.25rem;
   }
 
   .node {
     top: 0.5rem;
-    left: 0;
-    margin-top: 0;
-  }
-
-  .year {
-    font-size: 1.375rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .content {
-    padding-top: 0.5rem;
-    gap: 0.4rem;
-  }
-}
-
-/*
- * Reduced motion: snapping is itself motion. Keep the band scrollable but let
- * it come to rest wherever the user leaves it.
- */
-@media (prefers-reduced-motion: reduce) {
-  .track {
-    scroll-snap-type: none;
   }
 }

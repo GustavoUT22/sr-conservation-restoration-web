@@ -6,15 +6,15 @@ import { useMotionVariants } from "@/lib/motion";
 import styles from "./Timeline.module.css";
 
 /**
- * Career timeline as a horizontal band.
+ * Career timeline on a vertical axis.
  *
- * It was a vertical list on a page that is already entirely vertical — five
- * more stacked blocks between two other stacked blocks. A timeline wants to run
- * along an axis, so the hairline is now a continuous time axis and the
- * milestones sit on it, scroll-snapped.
+ * It was briefly a horizontal snapping band. That failed on both ends: with a
+ * mouse nobody discovers a sideways scroll, and the band ran full-bleed while
+ * the heading was capped at --content-max, so the two never lined up. Vertical
+ * costs no discoverability and keeps one alignment for the whole section.
  *
- * The 01/02/03 index is gone: the years already order the sequence, and the
- * numbering was one of four sections repeating the same device.
+ * The years sit in their own column against the axis, which is what stops it
+ * reading as yet another stacked list.
  */
 export default function Timeline() {
   const v = useMotionVariants();
@@ -22,51 +22,40 @@ export default function Timeline() {
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
-        <motion.div
-          className={styles.header}
+        <motion.h2
+          className={styles.title}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ staggerChildren: 0.15 }}
+          variants={v.stratum}
         >
-          <motion.h2 className={styles.title} variants={v.stratum}>
-            Hitos profesionales
-          </motion.h2>
-          <motion.p className={styles.hint} variants={v.settle}>
-            Desliza para recorrer la trayectoria
-          </motion.p>
-        </motion.div>
+          Hitos profesionales
+        </motion.h2>
+
+        <motion.ol
+          className={styles.track}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ staggerChildren: 0.1 }}
+        >
+          {TIMELINE_MILESTONES.map((milestone) => (
+            <motion.li
+              key={milestone.year}
+              className={styles.milestone}
+              variants={v.stratum}
+            >
+              <span className={styles.year}>{milestone.year}</span>
+
+              <div className={styles.content}>
+                <span className={styles.node} aria-hidden="true" />
+                <h3 className={styles.itemTitle}>{milestone.title}</h3>
+                <p className={styles.itemDesc}>{milestone.description}</p>
+              </div>
+            </motion.li>
+          ))}
+        </motion.ol>
       </div>
-
-      <motion.ol
-        className={styles.track}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ staggerChildren: 0.12 }}
-        // Keyboard users scroll the band with arrow keys; the region needs a
-        // name and a tabstop for that to be discoverable.
-        tabIndex={0}
-        role="group"
-        aria-label="Línea de tiempo de hitos profesionales"
-      >
-        {TIMELINE_MILESTONES.map((milestone) => (
-          <motion.li
-            key={milestone.year}
-            className={styles.milestone}
-            variants={v.stratum}
-          >
-            <span className={styles.year}>{milestone.year}</span>
-
-            <span className={styles.node} aria-hidden="true" />
-
-            <div className={styles.content}>
-              <h3 className={styles.itemTitle}>{milestone.title}</h3>
-              <p className={styles.itemDesc}>{milestone.description}</p>
-            </div>
-          </motion.li>
-        ))}
-      </motion.ol>
     </section>
   );
 }
