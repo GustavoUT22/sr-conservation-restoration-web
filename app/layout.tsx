@@ -5,6 +5,7 @@ import "./globals.css";
 import IntroOverlay from "@/components/ui/IntroOverlay";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import StickyContact from "@/components/layout/StickyContact";
 import { SITE_JSON_LD, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const playfair = Playfair_Display({
@@ -52,6 +53,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <StickyContact />
       </body>
     </html>
   );

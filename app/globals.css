@@ -351,6 +351,16 @@ ol {
 }
 
 /*
+ * Room for the fixed contact bar on phones, so it never covers the last rows
+ * of the footer.
+ */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/*
  * Touch targets. Several links are 11px uppercase text, which gives a tap area
  * far under the 44px minimum — easy to miss and easy to hit by accident.
  * The padding is applied on coarse pointers only so the desktop layout, where

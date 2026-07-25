@@ -106,12 +106,31 @@
     min-height: 45svh;
   }
 
+  /* Vertical scrim: the horizontal one washed out the whole photograph on a
+     narrow screen, same problem the hero had. */
   .gradient {
     background: linear-gradient(
-      to right,
-      rgba(28, 20, 16, 0.97) 0%,
-      rgba(28, 20, 16, 0.90) 60%,
-      rgba(28, 20, 16, 0.75) 100%
+      to top,
+      rgba(28, 20, 16, 0.96) 0%,
+      rgba(28, 20, 16, 0.9) 45%,
+      rgba(28, 20, 16, 0.55) 75%,
+      rgba(28, 20, 16, 0.35) 100%
     );
+  }
+
+  /* Solid block, matching the hero's primary action. */
+  .cta {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    background-color: var(--accent-sand);
+    color: var(--bg-dark);
+    border-bottom: none;
+    padding: 0.95rem 1.6rem;
+    margin-top: 1.5rem;
+  }
+
+  .cta:hover {
+    color: var(--bg-dark);
   }
 }

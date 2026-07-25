@@ -1,0 +1,59 @@
+/*
+ * StickyContact.module.css
+ *
+ * Phone-only action bar pinned to the bottom of the viewport.
+ *
+ * Variables consumed from globals.css:
+ *   --bg-dark, --accent-sand → ground and action
+ *   --z-sticky               → sits under the nav and the intro, over content
+ *   --sans / --text-label    → typography
+ */
+
+/* Desktop has the navbar, the hero CTAs and the footer within easy reach. */
+.bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .bar {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    padding: 0.6rem 1rem;
+    /* Clears the iOS home indicator; resolves to 0 everywhere else. */
+    padding-bottom: calc(0.6rem + env(safe-area-inset-bottom, 0px));
+    background-color: rgba(16, 12, 9, 0.94);
+    border-top: 1px solid var(--border-inv);
+  }
+
+  .action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    font-family: var(--sans);
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--bg-dark);
+    background-color: var(--accent-sand);
+    border-radius: 0;
+    padding: 0.85rem 1rem;
+    transition: opacity 0.2s ease;
+  }
+
+  .action:active {
+    opacity: 0.85;
+  }
+
+  .action:focus-visible {
+    outline: 2px solid var(--text-inv);
+    outline-offset: -4px;
+  }
+}

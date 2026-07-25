@@ -353,4 +353,34 @@
   .content {
     padding-bottom: 9.5rem;
   }
+
+  /*
+   * On a phone an 11px uppercase label with a 1px underline does not read as a
+   * button — it reads as text. The 44px tap area made it reachable but not
+   * recognisable, which is a different problem. The primary action becomes a
+   * solid block; the secondary keeps the editorial underline so the hierarchy
+   * between them stays legible. Desktop is untouched.
+   */
+  .ctas {
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .ctaPrimary {
+    background-color: var(--accent-sand);
+    color: var(--bg-dark);
+    border-bottom: none;
+    padding: 0.95rem 1.6rem;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .ctaPrimary:hover {
+    color: var(--bg-dark);
+  }
+
+  .ctaSecondary {
+    padding: 0.95rem 0.25rem;
+    border-bottom: 1px solid var(--text-muted-inv);
+  }
 }
