@@ -26,17 +26,34 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
+  // Escape had no handler: the drawer could only be dismissed by pointer.
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
+
   const closeMenu = (): void => setMenuOpen(false);
 
   return (
     <>
       <header className={styles.header}>
         <Link href="/" className={styles.logo} onClick={closeMenu}>
+          {/* The .svg was a 415KB PNG in an SVG wrapper, shipped on every page
+              for an 80px mark. This is the same artwork at 3x, 5.3KB.
+              64x60 keeps the original 415.5:387.75 ratio — the old 80x60 was
+              stretching it horizontally. */}
           <Image
-            src="/sr-isotipo.svg"
+            src="/sr-isotipo.webp"
             alt="S.R — Conservación y Restauración"
-            width={80}
+            width={64}
             height={60}
+            priority
           />
         </Link>
 
@@ -57,6 +74,7 @@ export default function Navbar() {
           onClick={() => setMenuOpen((prev) => !prev)}
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
+          aria-controls="menu-movil"
         >
           {menuOpen ? (
             <IoCloseOutline size={22} />
@@ -72,9 +90,14 @@ export default function Navbar() {
         aria-hidden="true"
       />
 
+      {/* inert while closed: the drawer stays mounted and only slides off
+          screen, so without this its four links stayed in the tab order and
+          were announced twice by screen readers. */}
       <nav
+        id="menu-movil"
         className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ""}`}
         aria-label="Menú móvil"
+        inert={!menuOpen}
       >
         <ul className={styles.drawerList}>
           {NAV_LINKS.map(({ label, href }, i) => (
