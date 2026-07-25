@@ -41,12 +41,18 @@ export default function Works() {
         </motion.p>
       </motion.div>
 
+      {/* On phones this grid becomes a horizontal snapping band. It needs a
+          name and a tabstop so it can be reached and scrolled with a keyboard —
+          the cards themselves are articles, not focusable controls. */}
       <motion.div
         className={styles.grid}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-40px" }}
         transition={{ staggerChildren: 0.08 }}
+        tabIndex={0}
+        role="group"
+        aria-label="Galería de obras intervenidas"
       >
         {WORKS.map((work) => (
           <motion.article
