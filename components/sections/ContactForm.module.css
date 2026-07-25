@@ -1,0 +1,176 @@
+/*
+ * ContactForm.module.css
+ *
+ * Variables consumed from globals.css:
+ *   --text-main      → input text, submit label
+ *   --text-muted     → placeholders
+ *   --accent         → field labels, focus state
+ *   --serif / --sans → typography
+ *
+ * Section background is --bg-light, so borders use black alphas rather than
+ * --border-inv (which is tuned for dark surfaces).
+ */
+
+.formCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.formTitle {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text-main);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.input,
+.textarea {
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  font-weight: 300;
+  color: var(--text-main);
+  background-color: transparent;
+  border: none;
+  /*
+   * The underline is the only visual boundary of these controls, so WCAG 1.4.11
+   * applies: 3:1 minimum. It was rgba(0,0,0,0.12) — 1.31:1 over --bg-light.
+   */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+  padding: 0.75rem 0;
+  outline: none;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+  border-radius: 0;
+}
+
+/*
+ * Placeholders carry the only hint of the expected format, so they need the
+ * same 4.5:1 as body text. `--text-muted` at opacity 0.6 composited to #ACA69C
+ * over --bg-light = 2.15:1. No opacity, and the token stands on its own.
+ */
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--accent);
+}
+
+/* Keyboard users need a visible ring; the border shift alone is too subtle. */
+.input:focus-visible,
+.textarea:focus-visible,
+.submit:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.input[aria-invalid="true"],
+.textarea[aria-invalid="true"] {
+  border-color: #a3372f;
+}
+
+.input:disabled,
+.textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.fieldError {
+  font-family: var(--sans);
+  font-size: var(--text-meta);
+  font-weight: 400;
+  line-height: 1.4;
+  /* Darkened against --bg-light (#F5F1EA) to clear 4.5:1. */
+  color: #a3372f;
+}
+
+.submit {
+  align-self: flex-start;
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--text-main);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--text-main);
+  padding: 0 0 0.25rem;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  margin-top: 0.5rem;
+  border-radius: 0;
+}
+
+.submit:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+/*
+ * Kept in the layout (not display:none) so the element stays reachable to the
+ * bots that parse styles, while remaining invisible and unfocusable for users.
+ */
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.feedback {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  min-height: 1.25rem;
+  margin: 0;
+}
+
+.feedback:empty {
+  min-height: 0;
+}
+
+.feedbackError {
+  color: #a3372f;
+}
+
+.feedbackSuccess {
+  color: var(--accent);
+}
