@@ -1,0 +1,80 @@
+/*
+ * CleaningReveal.module.css
+ *
+ * Variables consumed from globals.css:
+ *   --surface     → frame background while the image loads
+ *   --accent-sand → travelling edge tint
+ *
+ * No box-shadow anywhere: the project bans it. The wet-swab glow on the edge is
+ * built from gradients instead, which also keeps it cheap to composite.
+ */
+
+.frame {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--surface);
+  /* Own stacking context so the edge can never escape over sibling sections. */
+  isolation: isolate;
+}
+
+.layer {
+  object-fit: cover;
+  object-position: center;
+}
+
+/*
+ * Oxidised varnish simulation: warm, dulled, slightly flattened contrast. Tuned
+ * to read as "aged" rather than "broken filter" — too much sepia and it looks
+ * like an Instagram preset instead of a conservation problem.
+ */
+.aged {
+  filter: sepia(0.42) saturate(0.55) brightness(0.7) contrast(0.92);
+}
+
+.cleanLayer {
+  position: absolute;
+  inset: 0;
+  /* clip-path is animated by motion; declared here so the initial paint before
+     hydration already matches the hidden state. */
+  clip-path: inset(0 100% 0 0);
+  will-change: clip-path;
+}
+
+/*
+ * The travelling edge — the swab's wet line trailing the wipe.
+ *
+ * Spans the full frame and slides on translateX rather than sitting narrow and
+ * animating `left`: transform composites, `left` reflows every frame. The glow
+ * is painted into the last 4.5rem via calc(), so its width stays fixed in
+ * pixels regardless of how wide the frame is.
+ */
+.edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgba(214, 200, 181, 0) calc(100% - 4.5rem),
+    rgba(214, 200, 181, 0.08) calc(100% - 2rem),
+    rgba(240, 234, 224, 0.45) calc(100% - 0.35rem),
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  will-change: transform;
+}
+
+/*
+ * Reduced motion: the component already swaps to a crossfade in JS, but keep a
+ * CSS guarantee in case the effect is ever used without the hook.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .cleanLayer {
+    clip-path: inset(0 0 0 0);
+  }
+
+  .edge {
+    display: none;
+  }
+}
