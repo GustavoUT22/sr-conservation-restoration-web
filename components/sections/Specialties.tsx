@@ -4,16 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { SPECIALTIES } from "@/lib/constants";
+import { useMotionVariants } from "@/lib/motion";
 import styles from "./Specialties.module.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function Specialties() {
+  const v = useMotionVariants();
+
+  // "especialidades", not "servicios": the latter collides with the /servicios route.
   return (
-    <section className={styles.section} id="servicios">
+    <section className={styles.section} id="especialidades">
       <motion.div
         className={styles.header}
         initial="hidden"
@@ -23,15 +22,15 @@ export default function Specialties() {
       >
         <motion.div
           className={styles.headerLeft}
-          variants={fadeUp}
+          variants={v.stratum}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <span className={styles.eyebrow}>Especialidades</span>
+          {/* Eyebrow dropped — the heading already names the section. */}
           <h2 className={styles.title}>Áreas de intervención</h2>
         </motion.div>
         <motion.p
           className={styles.headerDesc}
-          variants={fadeUp}
+          variants={v.stratum}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           Las tres disciplinas principales de nuestra práctica de restauración.
@@ -49,7 +48,7 @@ export default function Specialties() {
           <motion.article
             key={item.id}
             className={styles.card}
-            variants={fadeUp}
+            variants={v.stratum}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <div className={styles.imageWrapper}>
@@ -82,7 +81,8 @@ export default function Specialties() {
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <Link href="#obra" className={styles.ctaLink}>
+        {/* Pointed at the works grid before, which contradicted the label. */}
+        <Link href="/servicios" className={styles.ctaLink}>
           Ver todas las especialidades →
         </Link>
       </motion.div>

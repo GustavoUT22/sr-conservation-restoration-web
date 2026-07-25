@@ -1,17 +1,30 @@
 /*
  * Works.module.css
+ *
+ * Cinematic gallery register: the pieces are the content, so they run edge to
+ * edge on a dark ground with hairline seams instead of floating as spaced
+ * cards. Text sits over the image, never beside it.
+ *
+ * Variables consumed from globals.css:
+ *   --bg-dark, --surface        → ground and image placeholder
+ *   --text-inv, --text-muted-inv → titles and body
+ *   --accent-sand               → meta labels, rules
+ *   --sect-md / --sect-inline   → section rhythm
+ *   --text-* / --measure-*      → type scale
  */
 
-/* ── Sección ── */
 .section {
   background-color: var(--bg-dark);
-  padding: 6rem 2.5rem 7rem;
+  padding-block: var(--sect-md);
+  /* No inline padding: the grid itself is full-bleed. */
+  padding-inline: 0;
 }
 
 /* ── Header ── */
 .header {
-  margin-bottom: 4rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
   max-width: 900px;
+  padding-inline: var(--sect-inline);
 }
 
 .eyebrow {
@@ -31,95 +44,123 @@
 
 .eyebrowText {
   font-family: var(--sans);
-  font-size: 0.6875rem;
+  font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
   color: var(--accent-sand);
 }
 
 .title {
   font-family: var(--serif);
-  font-size: clamp(2.5rem, 5.5vw, 5rem);
+  /* Was clamp(...5rem), which matched the h1 of other pages and broke the
+     cross-page hierarchy. Section headings now share one scale step. */
+  font-size: var(--text-h2);
   font-weight: 400;
-  line-height: 1.05;
+  line-height: var(--leading-heading);
   color: var(--text-inv);
   margin-bottom: 1.5rem;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--track-tight);
+  text-wrap: balance;
 }
 
 .description {
   font-family: var(--sans);
-  font-size: 0.9375rem;
-  line-height: 1.7;
-  color: var(--text-muted);
-  max-width: 52ch;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--text-muted-inv);
+  max-width: var(--measure-intro);
 }
 
-/* ── Grid asimétrico ── */
+/*
+ * ── Mosaic ──
+ * Auto-placement driven by each work's own `size`, replacing seven hardcoded
+ * nth-child rules that silently broke as soon as an eighth piece was added.
+ * The 2px gap over a dark ground reads as a gallery wall, not as scattered cards.
+ */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, 260px);
-  column-gap: 4rem;
-  row-gap: 2rem;
+  grid-auto-rows: clamp(200px, 22vw, 300px);
+  grid-auto-flow: dense;
+  gap: 2px;
+  background-color: var(--bg-dark);
 }
 
-/* Posicionamiento explícito */
-.card:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
-.card:nth-child(2) { grid-column: 2; grid-row: 1; }
-.card:nth-child(3) { grid-column: 3; grid-row: 1; }
-.card:nth-child(4) { grid-column: 2; grid-row: 2 / 4; }
-.card:nth-child(5) { grid-column: 3; grid-row: 2; }
-.card:nth-child(6) { grid-column: 1; grid-row: 3 / 5; }
-.card:nth-child(7) { grid-column: 3; grid-row: 3; }
-
-/* ── Card base ── */
 .card {
   position: relative;
   overflow: hidden;
-  border-radius: 3px;
-  cursor: pointer;
   background-color: var(--surface);
+  /* border-radius stays 0 — project-wide decision. The old 3px was a leftover. */
+  grid-row: span 1;
 }
 
-/* ── Imagen ── */
+.cardTall {
+  grid-row: span 2;
+}
+
+/* ── Image ── */
 .imageWrapper {
   position: absolute;
   inset: 0;
-  overflow: hidden;           /* contiene el zoom sin salir de la card */
+  overflow: hidden;
 }
 
+/*
+ * Pieces sit under a faint oxidised-varnish cast and clear as you engage with
+ * them — the cleaning gesture applied to the grid itself, with no second image
+ * to download. Kept subtle: the work must still read at rest.
+ */
 .image {
   object-fit: cover;
   object-position: center;
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: sepia(0.22) saturate(0.72) brightness(0.88) contrast(0.96);
+  transition:
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card:hover .image {
-  transform: scale(1.06);
+.card:hover .image,
+.card:focus-within .image {
+  transform: scale(1.04);
+  filter: sepia(0) saturate(1) brightness(1) contrast(1);
 }
 
-/* ── Overlay gradiente ── */
+/* Touch devices never hover, so the varnish would never lift. */
+@media (hover: none) {
+  .image {
+    filter: sepia(0.08) saturate(0.9) brightness(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    transition: filter 0.2s linear;
+  }
+}
+
+/* ── Scrim ── */
 .overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* Guarantees text contrast regardless of how bright the photograph is. */
   background: linear-gradient(
     to top,
-    rgba(16, 12, 9, 0.90) 0%,
-    rgba(16, 12, 9, 0.45) 40%,
-    rgba(16, 12, 9, 0.05) 100%
+    rgba(16, 12, 9, 0.92) 0%,
+    rgba(16, 12, 9, 0.55) 42%,
+    rgba(16, 12, 9, 0.08) 100%
   );
-  transition: background 0.45s ease;
+  transition: background 0.5s ease;
 }
 
-.card:hover .overlay {
+.card:hover .overlay,
+.card:focus-within .overlay {
   background: linear-gradient(
     to top,
-    rgba(16, 12, 9, 0.97) 0%,
-    rgba(16, 12, 9, 0.70) 50%,
-    rgba(16, 12, 9, 0.25) 100%
+    rgba(16, 12, 9, 0.96) 0%,
+    rgba(16, 12, 9, 0.72) 55%,
+    rgba(16, 12, 9, 0.3) 100%
   );
 }
 
@@ -129,7 +170,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1.25rem 1.25rem 1.5rem;
+  padding: clamp(1rem, 2vw, 1.75rem);
   z-index: 2;
 }
 
@@ -137,88 +178,176 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
 }
 
-.cardMeta span {
+/* Scoped to direct spans so .cardDash no longer needs five !important rules. */
+.cardMeta > .cardMetaItem {
   font-family: var(--sans);
-  font-size: 0.5625rem;
+  font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--track-caps);
   text-transform: uppercase;
   color: var(--accent-sand);
-  opacity: 0.85;
 }
 
 .cardDash {
-  display: block !important;
-  width: 1.5rem !important;
-  height: 1px !important;
-  background-color: var(--accent-sand) !important;
-  opacity: 0.45 !important;
+  display: block;
+  width: 1.5rem;
+  height: 1px;
+  background-color: var(--accent-sand);
+  opacity: 0.45;
   flex-shrink: 0;
 }
 
 .cardTitle {
   font-family: var(--serif);
-  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  font-size: var(--text-h3);
   font-weight: 400;
+  /* Italics on project titles is one of the three sanctioned uses. */
   font-style: italic;
   color: var(--text-inv);
-  line-height: 1.2;
-  margin-bottom: 0.65rem;
+  line-height: var(--leading-heading);
+  text-wrap: balance;
   transition: color 0.3s ease;
 }
 
-.card:hover .cardTitle {
+.card:hover .cardTitle,
+.card:focus-within .cardTitle {
   color: #fff;
 }
 
-/* Línea bajo el título — aparece en hover */
+/*
+ * Rule that draws itself under the title on engagement. Restored after the
+ * section rewrite dropped it — it is what gives the card a sense of responding
+ * rather than just brightening. :focus-within added so it is reachable by
+ * keyboard, which the original hover-only version was not.
+ */
 .cardLine {
   width: 2rem;
   height: 1px;
+  margin-top: 0.65rem;
   background-color: var(--accent-sand);
   opacity: 0;
   transform: scaleX(0);
   transform-origin: left;
-  transition: opacity 0.35s ease 0.05s, transform 0.4s ease 0.05s;
+  transition:
+    opacity 0.35s ease 0.05s,
+    transform 0.4s ease 0.05s;
 }
 
-.card:hover .cardLine {
+.card:hover .cardLine,
+.card:focus-within .cardLine {
   opacity: 0.7;
   transform: scaleX(1);
 }
 
-/* ── Responsive: mobile ── */
-@media (max-width: 768px) {
-  .section {
-    padding: 4rem 1.25rem 5rem;
-  }
-
-  .grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .card {
-    height: 280px;
+@media (prefers-reduced-motion: reduce) {
+  .cardLine {
+    transition: opacity 0.2s linear;
+    transform: scaleX(1);
   }
 }
 
-/* ── Responsive: tablet ── */
-@media (min-width: 769px) and (max-width: 1024px) {
+/* ── Responsive ── */
+@media (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(5, 240px);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    /* Nearly the full screen per piece. On a phone the gallery reads as one
+       work at a time, so each one should command the viewport instead of
+       sitting at two-thirds of it. */
+    grid-auto-rows: 82vh;
+    gap: 1px;
   }
 
-  .card:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
-  .card:nth-child(2) { grid-column: 2; grid-row: 1; }
-  .card:nth-child(3) { grid-column: 2; grid-row: 2; }
-  .card:nth-child(4) { grid-column: 1; grid-row: 3 / 5; }
-  .card:nth-child(5) { grid-column: 2; grid-row: 3; }
-  .card:nth-child(6) { grid-column: 2; grid-row: 4 / 6; }
-  .card:nth-child(7) { grid-column: 1; grid-row: 5; }
+  .cardTall {
+    grid-row: span 1;
+  }
+
+  .cardInfo {
+    padding: 1.25rem 1.25rem 1.75rem;
+  }
+}
+
+/*
+ * ── Touch: scroll replaces hover ──
+ *
+ * Every reveal on this card is bound to :hover, which simply never fires on a
+ * phone — so on touch the whole piece arrived flat and stayed flat. Here the
+ * same choreography is driven by the card entering the viewport instead.
+ * Pure CSS, no observer, no JS.
+ */
+@media (hover: none) {
+  .card {
+    view-timeline-name: --card;
+    view-timeline-axis: block;
+  }
+
+  .image {
+    /* Base state for touch is the lighter varnish set above; scrolling into
+       view lifts it the rest of the way. */
+    animation: liftVarnish linear both;
+    animation-timeline: --card;
+    animation-range: entry 20% cover 40%;
+  }
+
+  .cardLine {
+    animation: drawLine linear both;
+    animation-timeline: --card;
+    animation-range: entry 30% cover 48%;
+  }
+
+  .cardTitle {
+    animation: brightenTitle linear both;
+    animation-timeline: --card;
+    animation-range: entry 25% cover 45%;
+  }
+
+  @keyframes liftVarnish {
+    from {
+      filter: sepia(0.24) saturate(0.74) brightness(0.86);
+      transform: scale(1.05);
+    }
+    to {
+      filter: sepia(0) saturate(1) brightness(1);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes drawLine {
+    from {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    to {
+      opacity: 0.7;
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes brightenTitle {
+    from {
+      color: var(--text-inv);
+    }
+    to {
+      color: #fff;
+    }
+  }
+}
+
+/* Touch devices with no timeline support: show the resolved state, not the
+   pre-animation one, so nothing is stuck mid-effect. */
+@supports not (animation-timeline: view()) {
+  @media (hover: none) {
+    .cardLine {
+      opacity: 0.7;
+      transform: scaleX(1);
+    }
+  }
 }
